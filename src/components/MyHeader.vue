@@ -8,7 +8,7 @@
 header {
   width: 100%;
   height: 100vh;
-  background-image: url(../public/wMarvel.webp);
+  background-image: url(../../public/wMarvel.webp);
   background-size: cover;
   background-position: center;
   min-width: 400px;
