@@ -26,7 +26,9 @@ async function fetchData() {
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
-        <h3>{{ i.name }}</h3>
+        <div class="name">
+          <h3>{{ i.name }}</h3>
+        </div>
       </li>
     </ul>
   </div>
@@ -39,7 +41,7 @@ div {
 }
 ul {
   padding: 0;
-  margin: 0;
+  margin: 0 0.5rem;
   max-width: 80vw;
   max-height: 30vh;
   display: flex;
@@ -63,14 +65,26 @@ ul li {
   align-items: center;
   justify-content: end;
   cursor: pointer;
-  border-left: #191919 solid 3px;
-  border-bottom: #191919 solid 3px;
 }
 ul li:hover {
   scale: 1.05;
 }
+ul li .name {
+  background-color: #f90000;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  border-radius: 0.8rem;
+  text-align: center;
+}
+ul li .name:hover {
+  opacity: 1;
+  background-color: #f900007e;
+}
 ul li h3 {
-  color: #ffff;
+  color: #ffffff;
+  line-height: 128px;
   margin: 0;
+  height: 100%;
 }
 </style>
