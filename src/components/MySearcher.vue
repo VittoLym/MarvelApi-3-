@@ -3,12 +3,15 @@ import { ref } from 'vue'
 
 import SearchIcon from '../assets/search.svg'
 import OptionsIcon from '../assets/options.svg'
+import MyFilters from './MyFilters.vue'
 
 const inputText = ref('')
 const filters = ref(false)
 
 const searchHero = () => {
-  console.log(inputText.value)
+  if (inputText.value !== '') {
+    console.log(inputText.value)
+  }
 }
 const optionsFinder = () => {
   filters.value = !filters.value
@@ -31,6 +34,7 @@ const optionsFinder = () => {
         <img @click="optionsFinder" class="icon option" :src="OptionsIcon" alt="finder options" />
       </article>
     </article>
+    <MyFilters v-if="filters" />
   </div>
 </template>
 <style scoped>
@@ -38,7 +42,7 @@ h1 {
   margin: 5vh 0;
 }
 .finder {
-  height: 40vh;
+  height: max-content;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -48,6 +52,7 @@ h1 {
 label {
   width: 40vw;
   margin-bottom: 1.5vh;
+  margin-top: 15vh;
 }
 .inputContainer {
   display: flex;
@@ -61,6 +66,7 @@ label {
   margin: 0;
   height: 10vh;
   width: 40vw;
+  margin-bottom: 1vh;
 }
 .inputContainer:focus-visible {
   outline: 2px solid #00000087;

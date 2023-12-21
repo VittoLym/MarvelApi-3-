@@ -1,11 +1,33 @@
 <script setup>
 import MyHeader from '../components/MyHeader.vue'
+import MyNavbar from '../components/MyNavbar.vue'
 import MySearcher from '../components/MySearcher.vue'
 import MyLayout from '../components/MyLayout.vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
+onMounted(() => {
+  addEventListener('scroll', changeVisibility)
+})
+
+onBeforeUnmount(() => {
+  removeEventListener('scroll', changeVisibility)
+})
+
+const changeVisibility = () => {
+  const header = headerRef.value.$el.getBoundingClientRect().top
+  if (header >= -500) {
+    vMenu.value = false
+  } else if (header <= -530) {
+    vMenu.value = true
+  }
+}
+const vMenu = ref(false)
+const headerRef = ref(null)
 </script>
 <template>
   <main>
-    <MyHeader />
+    <MyHeader ref="headerRef" />
+    <MyNavbar v-if="vMenu" />
     <MySearcher />
     <MyLayout />
   </main>

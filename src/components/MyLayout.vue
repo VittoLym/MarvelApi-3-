@@ -1,6 +1,6 @@
 <script setup>
 import MyCharacters from './MyCharacters.vue'
-const titles = ['characters', 'comics', 'movies']
+const titles = ['Characters', 'Comics', 'Movies']
 </script>
 <template>
   <article class="title" v-for="i in titles" :key="i">
@@ -17,6 +17,7 @@ const titles = ['characters', 'comics', 'movies']
   width: 75%;
   flex-wrap: wrap;
   align-items: center;
+  margin-top: 10vh;
   margin-bottom: 2rem;
 }
 .title p {
