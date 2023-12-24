@@ -13,8 +13,10 @@ const emits = defineEmits(['filteredHero'])
 
 const searchHero = () => {
   if (inputText.value !== '') {
-    const filteredArray = characters.value.filter((i) => i.name.includes(inputText.value))
-    if (filteredArray.length <= 0) {
+    const filteredArray = characters.value.filter((i) =>
+      i.name.toLowerCase().startsWith(inputText.value.toLowerCase())
+    )
+    if (filteredArray.length == 0) {
       console.log('nada')
       emits('filteredHero', ['no hay coincidencias'])
     } else {
