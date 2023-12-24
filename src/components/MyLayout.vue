@@ -1,6 +1,12 @@
 <script setup>
+import { onUpdated } from 'vue'
+
 import MyCharacters from './MyCharacters.vue'
+
+const props = defineProps(['heroesApi', 'filteredHero'])
 const titles = ['Characters', 'Comics', 'Movies']
+
+onUpdated(() => {})
 </script>
 <template>
   <article class="title" v-for="i in titles" :key="i">
@@ -8,7 +14,7 @@ const titles = ['Characters', 'Comics', 'Movies']
     <router-link :to="'/' + i">
       <span>See More</span>
     </router-link>
-    <MyCharacters />
+    <MyCharacters :props="props.heroesApi" :filteredHero="props.filteredHero" />
   </article>
 </template>
 <style scoped>

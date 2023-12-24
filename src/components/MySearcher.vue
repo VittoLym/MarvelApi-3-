@@ -1,21 +1,39 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onUpdated, defineEmits } from 'vue'
 
 import SearchIcon from '../assets/search.svg'
 import OptionsIcon from '../assets/options.svg'
 import MyFilters from './MyFilters.vue'
 
+const characters = ref([])
 const inputText = ref('')
 const filters = ref(false)
+const props = defineProps(['heroesApi'])
+const emits = defineEmits(['filteredHero'])
 
 const searchHero = () => {
   if (inputText.value !== '') {
-    console.log(inputText.value)
+    const filteredArray = characters.value.filter((i) => i.name.includes(inputText.value))
+    if (filteredArray.length <= 0) {
+      console.log('nada')
+      emits('filteredHero', ['no hay coincidencias'])
+    } else {
+      console.log(filteredArray)
+      emits('filteredHero', filteredArray)
+    }
+  }
+  if (inputText.value == '') {
+    const filteredArray = []
+    emits('filteredHero', filteredArray)
   }
 }
 const optionsFinder = () => {
   filters.value = !filters.value
 }
+
+onUpdated(() => {
+  characters.value = props.heroesApi
+})
 </script>
 <template>
   <div class="finder">

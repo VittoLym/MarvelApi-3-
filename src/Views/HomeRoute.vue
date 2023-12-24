@@ -1,17 +1,31 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { API_KEY } from '../utils/const.js'
+
 import MyHeader from '../components/MyHeader.vue'
 import MyNavbar from '../components/MyNavbar.vue'
 import MySearcher from '../components/MySearcher.vue'
 import MyLayout from '../components/MyLayout.vue'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-onMounted(() => {
-  addEventListener('scroll', changeVisibility)
-})
+const heroesApi = ref([])
+const filteredHero = ref([])
+const vMenu = ref(false)
+const headerRef = ref(null)
 
-onBeforeUnmount(() => {
-  removeEventListener('scroll', changeVisibility)
-})
+async function fetchData() {
+  try {
+    const resp = await fetch(API_KEY)
+    const respData = await resp.json()
+    heroesApi.value = await respData.data.results
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function handleEmit(value) {
+  filteredHero.value = value
+  console.log(value)
+}
 
 const changeVisibility = () => {
   const header = headerRef.value.$el.getBoundingClientRect().top
@@ -21,15 +35,22 @@ const changeVisibility = () => {
     vMenu.value = true
   }
 }
-const vMenu = ref(false)
-const headerRef = ref(null)
+
+onMounted(async () => {
+  await fetchData()
+  addEventListener('scroll', changeVisibility)
+})
+
+onBeforeUnmount(() => {
+  removeEventListener('scroll', changeVisibility)
+})
 </script>
 <template>
   <main>
     <MyHeader ref="headerRef" />
     <MyNavbar v-if="vMenu" />
-    <MySearcher />
-    <MyLayout />
+    <MySearcher :heroesApi="heroesApi" @filtered-hero="handleEmit" />
+    <MyLayout :heroesApi="heroesApi" :filteredHero="filteredHero" />
   </main>
 </template>
 <style scoped>

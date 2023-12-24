@@ -1,3 +1,11 @@
+format script => (
+1! - import {} from '...';
+2! - import Component from '...';
+3! - const const = value;
+4! - function function() = {};
+5! - onMonunted(() => {});
+)
+
 # 3
 
 This template should help get you started developing with Vue 3 in Vite.

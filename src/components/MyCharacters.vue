@@ -1,35 +1,51 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { API_KEY } from '../utils/const'
+import { ref, onMounted, onUpdated } from 'vue'
 
-const heroesApi = ref()
+const props = defineProps(['props', 'filteredHero'])
+const heroesApi = ref([])
+const filteredHero = ref([])
 
-onMounted(async () => {
-  await fetchData()
+onMounted(async () => {})
+
+onUpdated(() => {
+  heroesApi.value = props.props
+  filteredHero.value = props.filteredHero
 })
-
-async function fetchData() {
-  try {
-    const resp = await fetch(API_KEY)
-    const respData = await resp.json()
-    heroesApi.value = await respData.data.results
-  } catch (error) {
-    console.log(error)
-  }
-}
 </script>
 <template>
-  <div>
-    <ul>
+  <div
+    v-if="
+      filteredHero.length >= 0 &&
+      heroesApi.length >= 1 &&
+      filteredHero[0] !== 'no hay coincidencias'
+    "
+  >
+    <ul v-if="filteredHero.length >= 1" class="if">
+      <li
+        v-for="i in filteredHero"
+        :key="i.ul"
+        :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
+      >
+        <div class="name">
+          <p>{{ i.name }}</p>
+        </div>
+      </li>
+    </ul>
+    <ul v-else-if="heroesApi.length >= 0" class="else-if">
       <li
         v-for="i in heroesApi"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <div class="name">
-          <h3>{{ i.name }}</h3>
+          <p>{{ i.name }}</p>
         </div>
       </li>
+    </ul>
+  </div>
+  <div v-else>
+    <ul>
+      <p>{{ filteredHero[0] }}</p>
     </ul>
   </div>
 </template>
@@ -38,6 +54,7 @@ div {
   background-color: #19191950;
   border-radius: 0.8rem;
   box-shadow: 0 0 7px #00000076;
+  width: 100%;
 }
 ul {
   padding: 0;
@@ -76,15 +93,17 @@ ul li .name {
   opacity: 0;
   border-radius: 0.8rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 ul li .name:hover {
   opacity: 1;
   background-color: #f900007e;
 }
-ul li h3 {
+ul li p {
+  align-self: center;
   color: #ffffff;
-  line-height: 128px;
-  margin: 0;
-  height: 100%;
+  font-size: 1.1rem;
+  font-weight: bolder;
 }
 </style>
