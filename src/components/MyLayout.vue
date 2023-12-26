@@ -2,9 +2,11 @@
 import { onUpdated } from 'vue'
 
 import MyCharacters from './MyCharacters.vue'
+import MyComics from './MyComics.vue'
+import MyEvents from './MyEvents.vue'
 
-const props = defineProps(['heroesApi', 'filteredHero'])
-const titles = ['Characters', 'Comics', 'Movies']
+const props = defineProps(['heroesApi', 'filteredHero', 'comicsApi', 'eventsApi'])
+const titles = ['Characters', 'Comics', 'Events']
 
 onUpdated(() => {})
 </script>
@@ -14,7 +16,21 @@ onUpdated(() => {})
     <router-link :to="'/' + i">
       <span>See More</span>
     </router-link>
-    <MyCharacters :props="props.heroesApi" :filteredHero="props.filteredHero" />
+    <MyCharacters
+      :props="props.heroesApi"
+      :filteredHero="props.filteredHero"
+      v-if="i === 'Characters'"
+    />
+    <MyComics
+      :comicsApi="props.comicsApi"
+      :filteredHero="props.filteredHero"
+      v-if="i === 'Comics'"
+    />
+    <MyEvents
+      :eventsApi="props.eventsApi"
+      :filteredHero="props.filteredHero"
+      v-if="i === 'Events'"
+    />
   </article>
 </template>
 <style scoped>

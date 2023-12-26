@@ -6,11 +6,10 @@
       <article class="Filter">
         <label class="filter" for="seleccion">Characters, Comics, Movies or all</label>
         <select id="seleccion" name="seleccion">
-          <option value=""></option>
+          <option value="All">All</option>
           <option value="Characters">Characters</option>
           <option value="Comics">Comics</option>
           <option value="Movies">Movies</option>
-          <option value="All">All</option>
         </select>
       </article>
       <article class="Filter">

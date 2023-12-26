@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onUpdated, defineEmits } from 'vue'
+import { ref, onUpdated } from 'vue'
 
 import SearchIcon from '../assets/search.svg'
 import OptionsIcon from '../assets/options.svg'
@@ -17,10 +17,8 @@ const searchHero = () => {
       i.name.toLowerCase().startsWith(inputText.value.toLowerCase())
     )
     if (filteredArray.length == 0) {
-      console.log('nada')
       emits('filteredHero', ['no hay coincidencias'])
     } else {
-      console.log(filteredArray)
       emits('filteredHero', filteredArray)
     }
   }

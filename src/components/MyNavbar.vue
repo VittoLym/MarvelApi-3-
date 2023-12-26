@@ -2,12 +2,20 @@
 <template>
   <nav class="nav">
     <article>
-      <p>Home</p>
-      <p>Characters</p>
+      <router-link to="/">
+        <p>Home</p>
+      </router-link>
+      <router-link to="/characters">
+        <p>Characters</p>
+      </router-link>
     </article>
     <article>
-      <p>Comics</p>
-      <p>Movies</p>
+      <router-link to="/characters">
+        <p>Comics</p>
+      </router-link>
+      <router-link to="/characters">
+        <p>Movies</p>
+      </router-link>
     </article>
   </nav>
 </template>
@@ -32,8 +40,11 @@ article {
   align-items: end;
   justify-content: space-between;
 }
-article p {
+article a p {
   font-size: 1.4rem;
-  width: 50%;
+}
+
+article a p:hover {
+  color: #cecece;
 }
 </style>

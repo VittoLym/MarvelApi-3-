@@ -1,22 +1,21 @@
 <script setup>
 import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['props', 'filteredHero'])
-const heroesApi = ref([])
+const props = defineProps(['filteredHero', 'comicsApi'])
+const comicsApi = ref([])
 const filteredHero = ref([])
 
 onMounted(async () => {})
 
 onUpdated(() => {
-  heroesApi.value = props.props
-  filteredHero.value = props.filteredHero
+  comicsApi.value = props.comicsApi
 })
 </script>
 <template>
   <div
     v-if="
       filteredHero.length >= 0 &&
-      heroesApi.length >= 1 &&
+      comicsApi.length >= 1 &&
       filteredHero[0] !== 'no hay coincidencias'
     "
   >
@@ -31,9 +30,9 @@ onUpdated(() => {
         </div>
       </li>
     </ul>
-    <ul v-else-if="heroesApi.length >= 0" class="else-if">
+    <ul v-else-if="comicsApi.length >= 0" class="else-if">
       <li
-        v-for="i in heroesApi.slice(0, 6)"
+        v-for="i in comicsApi.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >

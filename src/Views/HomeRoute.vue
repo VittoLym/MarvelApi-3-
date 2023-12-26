@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { API_KEY } from '../utils/const.js'
+import { API_KEY, API_COMICS, API_EVENTS } from '../utils/const.js'
 
 import MyHeader from '../components/MyHeader.vue'
 import MyNavbar from '../components/MyNavbar.vue'
@@ -11,12 +11,15 @@ const heroesApi = ref([])
 const filteredHero = ref([])
 const vMenu = ref(false)
 const headerRef = ref(null)
+const comicsApi = ref([])
+const eventsApi = ref([])
 
-async function fetchData() {
+async function fetchData(url) {
   try {
-    const resp = await fetch(API_KEY)
+    const resp = await fetch(url)
     const respData = await resp.json()
-    heroesApi.value = await respData.data.results
+    let returnData = await respData.data.results
+    return returnData
   } catch (error) {
     console.log(error)
   }
@@ -24,7 +27,6 @@ async function fetchData() {
 
 function handleEmit(value) {
   filteredHero.value = value
-  console.log(value)
 }
 
 const changeVisibility = () => {
@@ -37,8 +39,10 @@ const changeVisibility = () => {
 }
 
 onMounted(async () => {
-  await fetchData()
+  heroesApi.value = await fetchData(API_KEY)
   addEventListener('scroll', changeVisibility)
+  comicsApi.value = await fetchData(API_COMICS)
+  eventsApi.value = await fetchData(API_EVENTS)
 })
 
 onBeforeUnmount(() => {
@@ -50,7 +54,12 @@ onBeforeUnmount(() => {
     <MyHeader ref="headerRef" />
     <MyNavbar v-if="vMenu" />
     <MySearcher :heroesApi="heroesApi" @filtered-hero="handleEmit" />
-    <MyLayout :heroesApi="heroesApi" :filteredHero="filteredHero" />
+    <MyLayout
+      :eventsApi="eventsApi"
+      :comicsApi="comicsApi"
+      :heroesApi="heroesApi"
+      :filteredHero="filteredHero"
+    />
   </main>
 </template>
 <style scoped>
