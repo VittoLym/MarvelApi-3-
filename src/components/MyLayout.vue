@@ -5,7 +5,14 @@ import MyCharacters from './MyCharacters.vue'
 import MyComics from './MyComics.vue'
 import MyEvents from './MyEvents.vue'
 
-const props = defineProps(['heroesApi', 'filteredHero', 'comicsApi', 'eventsApi'])
+const props = defineProps([
+  'heroesApi',
+  'filteredHero',
+  'comicsApi',
+  'filteredComics',
+  'eventsApi',
+  'filteredEvents'
+])
 const titles = ['Characters', 'Comics', 'Events']
 
 onUpdated(() => {})
@@ -23,12 +30,13 @@ onUpdated(() => {})
     />
     <MyComics
       :comicsApi="props.comicsApi"
-      :filteredHero="props.filteredHero"
+      :filteredComics="props.filteredComics"
       v-if="i === 'Comics'"
     />
     <MyEvents
       :eventsApi="props.eventsApi"
       :filteredHero="props.filteredHero"
+      :filteredEvents="props.filteredEvents"
       v-if="i === 'Events'"
     />
   </article>

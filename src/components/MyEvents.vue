@@ -1,33 +1,35 @@
 <script setup>
 import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['filteredHero', 'eventsApi'])
+const props = defineProps(['filteredEvents', 'eventsApi', 'filteredHero'])
 const eventsApi = ref([])
 const filteredHero = ref([])
+const filteredEvents = ref([])
 
 onMounted(async () => {})
 
 onUpdated(() => {
   eventsApi.value = props.eventsApi
   filteredHero.value = props.filteredHero
+  filteredEvents.value = props.filteredEvents
 })
 </script>
 <template>
   <div
     v-if="
-      filteredHero.length >= 0 &&
+      filteredEvents.length >= 0 &&
       eventsApi.length >= 1 &&
-      filteredHero[0] !== 'no hay coincidencias'
+      filteredEvents[0] !== 'no hay coincidencias'
     "
   >
-    <ul v-if="filteredHero.length >= 1" class="if">
+    <ul v-if="filteredEvents.length >= 1" class="if">
       <li
-        v-for="i in filteredHero.slice(0, 6)"
+        v-for="i in filteredEvents.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <div class="name">
-          <p>{{ i.name }}</p>
+          <p>{{ i.title }}</p>
         </div>
       </li>
     </ul>
@@ -38,14 +40,14 @@ onUpdated(() => {
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <div class="name">
-          <p>{{ i.name }}</p>
+          <p>{{ i.title }}</p>
         </div>
       </li>
     </ul>
   </div>
   <div v-else>
     <ul>
-      <p>{{ filteredHero[0] }}</p>
+      <p>{{ filteredEvents[0] }}</p>
     </ul>
   </div>
 </template>

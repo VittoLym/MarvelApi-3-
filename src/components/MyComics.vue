@@ -1,32 +1,34 @@
 <script setup>
 import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['filteredHero', 'comicsApi'])
-const comicsApi = ref([])
-const filteredHero = ref([])
+const props = defineProps(['filteredHero', 'comicsApi', 'filteredComics'])
+const heroesApi = ref([])
+const filteredComics = ref([])
 
 onMounted(async () => {})
 
 onUpdated(() => {
-  comicsApi.value = props.comicsApi
+  heroesApi.value = props.props
+  filteredComics.value = props.filteredComics
+  console.log(props.filteredComics)
 })
 </script>
 <template>
   <div
     v-if="
-      filteredHero.length >= 0 &&
+      filteredComics.length >= 0 &&
       comicsApi.length >= 1 &&
-      filteredHero[0] !== 'no hay coincidencias'
+      filteredComics[0] !== 'no hay coincidencias'
     "
   >
-    <ul v-if="filteredHero.length >= 1" class="if">
+    <ul v-if="filteredComics.length >= 1" class="if">
       <li
-        v-for="i in filteredHero.slice(0, 6)"
+        v-for="i in filteredComics.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <div class="name">
-          <p>{{ i.name }}</p>
+          <p>{{ i.title }}</p>
         </div>
       </li>
     </ul>
@@ -37,14 +39,14 @@ onUpdated(() => {
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <div class="name">
-          <p>{{ i.name }}</p>
+          <p>{{ i.title }}</p>
         </div>
       </li>
     </ul>
   </div>
   <div v-else>
     <ul>
-      <p>{{ filteredHero[0] }}</p>
+      <p>{{ filteredComics[0] }}</p>
     </ul>
   </div>
 </template>

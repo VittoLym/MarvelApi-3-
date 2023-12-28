@@ -9,6 +9,8 @@ import MyLayout from '../components/MyLayout.vue'
 
 const heroesApi = ref([])
 const filteredHero = ref([])
+const filteredComics = ref([])
+const filteredEvents = ref([])
 const vMenu = ref(false)
 const headerRef = ref(null)
 const comicsApi = ref([])
@@ -26,7 +28,77 @@ async function fetchData(url) {
 }
 
 function handleEmit(value) {
-  filteredHero.value = value
+  try {
+    console.log(filteredComics.value)
+    if (value.length == 0) {
+      filteredComics.value = value
+      filteredHero.value = value
+    } else if (value.length == 3) {
+      if (typeof value[0] === 'string') {
+        if (typeof value[1] === 'string') {
+          if (typeof value[2] === 'string') {
+            filteredEvents.value = value
+            filteredComics.value = value
+            filteredHero.value = value
+          } else {
+            filteredEvents.value = value[2]
+            filteredComics.value = value
+            filteredHero.value = value
+          }
+        } else {
+          filteredComics.value = value
+          filteredHero.value = value[1]
+          filteredEvents.value = value[2]
+        }
+      } else if (typeof value[1] === 'string') {
+        if (typeof value[0] === 'string') {
+          if (typeof value[2] === 'string') {
+            filteredHero.value = value
+            filteredComics.value = value
+            filteredEvents.value = value
+          } else {
+            filteredHero.value = value
+            filteredComics.value = value
+            filteredEvents.value = value[2]
+          }
+        } else {
+          filteredEvents.value = value[2]
+          filteredHero.value = value[0]
+          filteredComics.value = value
+        }
+      } else if (typeof value[2] === 'string') {
+        if (typeof value[1] === 'string') {
+          filteredComics.value = value[1]
+          if (typeof value[0] === 'string') {
+            filteredHero.value = value
+          } else {
+            filteredHero.value = value[0]
+          }
+        } else if (typeof value[0] === 'string') {
+          if (typeof value[1] === 'string') {
+            filteredComics.value = value[1]
+          } else {
+            filteredHero.value = value[0]
+            filteredComics.value = value[1]
+          }
+        } else {
+          filteredComics.value = value[1]
+          filteredEvents.value = value[2]
+        }
+      } else {
+        console.log('mandalorian')
+        filteredComics.value = value[0]
+        filteredHero.value = value[1]
+        filteredEvents.value = value[2]
+      }
+    }
+  } catch (e) {
+    throw new Error(e)
+  }
+}
+function handleEmitComics(value) {
+  filteredComics.value = value
+  console.log(value)
 }
 
 const changeVisibility = () => {
@@ -53,12 +125,20 @@ onBeforeUnmount(() => {
   <main>
     <MyHeader ref="headerRef" />
     <MyNavbar v-if="vMenu" />
-    <MySearcher :heroesApi="heroesApi" @filtered-hero="handleEmit" />
+    <MySearcher
+      :eventsApi="eventsApi"
+      :comicsApi="comicsApi"
+      :heroesApi="heroesApi"
+      @filtered-hero="handleEmit"
+      @filtered-comics="handleEmitComics"
+    />
     <MyLayout
       :eventsApi="eventsApi"
       :comicsApi="comicsApi"
       :heroesApi="heroesApi"
       :filteredHero="filteredHero"
+      :filteredComics="filteredComics"
+      :filteredEvents="filteredEvents"
     />
   </main>
 </template>

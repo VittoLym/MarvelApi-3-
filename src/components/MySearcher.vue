@@ -6,20 +6,54 @@ import OptionsIcon from '../assets/options.svg'
 import MyFilters from './MyFilters.vue'
 
 const characters = ref([])
+const comics = ref([])
+const events = ref([])
 const inputText = ref('')
 const filters = ref(false)
-const props = defineProps(['heroesApi'])
-const emits = defineEmits(['filteredHero'])
+const props = defineProps(['heroesApi', 'comicsApi', 'eventsApi'])
+const emits = defineEmits(['filteredHero', 'filteredComics', 'filteredEvents'])
 
 const searchHero = () => {
   if (inputText.value !== '') {
     const filteredArray = characters.value.filter((i) =>
       i.name.toLowerCase().startsWith(inputText.value.toLowerCase())
     )
-    if (filteredArray.length == 0) {
-      emits('filteredHero', ['no hay coincidencias'])
+    const filteredComic = comics.value.filter((i) =>
+      i.title.toLowerCase().startsWith(inputText.value.toLowerCase())
+    )
+    const filteredEvents = events.value.filter((i) =>
+      i.title.toLowerCase().startsWith(inputText.value.toLocaleLowerCase())
+    )
+    if (filteredComic.length == 0) {
+      filteredComic.value = 'no hay coincidencias'
+      if (filteredArray.length == 0) {
+        filteredArray.value = 'no hay coincidencias'
+        if (filteredEvents.length == 0) {
+          filteredEvents.value = 'no hay coincidencias'
+          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents.value])
+        } else {
+          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents])
+        }
+      } else {
+        emits('filteredHero', [filteredComic.value, filteredArray, filteredEvents])
+      }
+    } else if (filteredArray.length == 0) {
+      filteredArray.value = 'no hay coincidencias'
+      if (filteredComic.length == 0) {
+        filteredComic.value = 'no hay coincidencias'
+        if (filteredComic.length == 0) {
+          filteredEvents.value = 'no hay coincidencias'
+          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents.value])
+        } else {
+          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents])
+        }
+      } else {
+        emits('filteredHero', [filteredComic, filteredArray.value, filteredEvents])
+      }
+    } else if (filteredEvents.length == 0) {
+      filteredEvents.value = 'no hay coincidencias'
     } else {
-      emits('filteredHero', filteredArray)
+      emits('filteredHero', [filteredComic, filteredArray, filteredEvents])
     }
   }
   if (inputText.value == '') {
@@ -33,6 +67,8 @@ const optionsFinder = () => {
 
 onUpdated(() => {
   characters.value = props.heroesApi
+  comics.value = props.comicsApi
+  events.value = props.eventsApi
 })
 </script>
 <template>
