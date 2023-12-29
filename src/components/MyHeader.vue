@@ -16,6 +16,7 @@ header {
   flex-direction: column;
   justify-content: start;
   border-bottom: #f90000 5px solid;
+  margin-bottom: 5vh;
 }
 header h1 {
   margin: 3rem 0;

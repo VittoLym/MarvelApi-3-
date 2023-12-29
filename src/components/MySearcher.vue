@@ -106,7 +106,7 @@ h1 {
 label {
   width: 40vw;
   margin-bottom: 1.5vh;
-  margin-top: 15vh;
+  margin-top: 10vh;
 }
 .inputContainer {
   display: flex;

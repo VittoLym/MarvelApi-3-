@@ -23,6 +23,7 @@
 .nav {
   z-index: 100;
   position: fixed;
+  top: 0;
   display: flex;
   justify-content: space-between;
   width: 100%;
