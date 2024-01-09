@@ -12,14 +12,13 @@ onUpdated(() => {
   eventsApi.value = props.eventsApi
   filteredHero.value = props.filteredHero
   filteredEvents.value = props.filteredEvents
+  console.log('mandioca')
 })
 </script>
 <template>
   <div
     v-if="
-      filteredEvents.length >= 0 &&
-      eventsApi.length >= 1 &&
-      filteredEvents[0] !== 'no hay coincidencias'
+      filteredEvents.length >= 0 && eventsApi.length >= 1 && typeof filteredEvents[0] !== 'string'
     "
   >
     <ul v-if="filteredEvents.length >= 1" class="if">

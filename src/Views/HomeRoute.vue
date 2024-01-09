@@ -29,67 +29,23 @@ async function fetchData(url) {
 
 function handleEmit(value) {
   try {
-    console.log(filteredComics.value)
     if (value.length == 0) {
       filteredComics.value = value
+      filteredEvents.value = value
       filteredHero.value = value
     } else if (value.length == 3) {
-      if (typeof value[0] === 'string') {
-        if (typeof value[1] === 'string') {
-          if (typeof value[2] === 'string') {
-            filteredEvents.value = value
-            filteredComics.value = value
-            filteredHero.value = value
-          } else {
-            filteredEvents.value = value[2]
-            filteredComics.value = value
-            filteredHero.value = value
-          }
+      for (let i of value) {
+        if (value.indexOf(i) === 2) {
+          typeof i === 'string' ? (filteredEvents.value = [i]) : (filteredEvents.value = i)
+        } else if (value.indexOf(i) === 1) {
+          typeof i === 'string' ? (filteredHero.value = [i]) : (filteredHero.value = i)
+        } else if (value.indexOf(i) === 0) {
+          typeof i === 'string' ? (filteredComics.value = [i]) : (filteredComics.value = i)
         } else {
-          filteredComics.value = value
-          filteredHero.value = value[1]
-          filteredEvents.value = value[2]
+          filteredComics.value = i
+          filteredHero.value = i
+          filteredEvents.value = i
         }
-      } else if (typeof value[1] === 'string') {
-        if (typeof value[0] === 'string') {
-          if (typeof value[2] === 'string') {
-            filteredHero.value = value
-            filteredComics.value = value
-            filteredEvents.value = value
-          } else {
-            filteredHero.value = value
-            filteredComics.value = value
-            filteredEvents.value = value[2]
-          }
-        } else {
-          filteredEvents.value = value[2]
-          filteredHero.value = value[0]
-          filteredComics.value = value
-        }
-      } else if (typeof value[2] === 'string') {
-        if (typeof value[1] === 'string') {
-          filteredComics.value = value[1]
-          if (typeof value[0] === 'string') {
-            filteredHero.value = value
-          } else {
-            filteredHero.value = value[0]
-          }
-        } else if (typeof value[0] === 'string') {
-          if (typeof value[1] === 'string') {
-            filteredComics.value = value[1]
-          } else {
-            filteredHero.value = value[0]
-            filteredComics.value = value[1]
-          }
-        } else {
-          filteredComics.value = value[1]
-          filteredEvents.value = value[2]
-        }
-      } else {
-        console.log('mandalorian')
-        filteredComics.value = value[0]
-        filteredHero.value = value[1]
-        filteredEvents.value = value[2]
       }
     }
   } catch (e) {

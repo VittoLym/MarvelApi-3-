@@ -34,12 +34,14 @@ onMounted(async () => {
     </div>
     <MySearcher />
     <main class="characters">
-      <ul v-for="i in heroes" :key="i">
-        <article
-          class="Container"
-          :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
-        >
-          <li>
+      <ul
+        v-for="i in heroes"
+        :key="i"
+        class="card img"
+        :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
+      >
+        <article class="textBox">
+          <li class="text head">
             {{ i.name }}
           </li>
         </article>
@@ -48,6 +50,96 @@ onMounted(async () => {
   </section>
 </template>
 <style scoped>
+.card {
+  width: 195px;
+  height: 285px;
+  background: #313131;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: 0.2s ease-in-out;
+  background-size: cover;
+  margin: 1rem;
+}
+.card:hover {
+  box-shadow: 0 0 20px #000;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(20px); /* Ajusta el valor del desenfoque según tus necesidades */
+  z-index: -1;
+}
+.img {
+  transition: 0.2s ease-in-out;
+}
+
+.textBox {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  transition: 0.2s ease-in-out;
+  z-index: 2;
+}
+.text {
+  list-style: none;
+  color: #c0c0c0;
+}
+.textBox > .text {
+  font-weight: bold;
+}
+
+.textBox > .head {
+  font-size: 20px;
+}
+
+.textBox > .price {
+  font-size: 17px;
+}
+
+.textBox > span {
+  font-size: 12px;
+  color: lightgrey;
+}
+
+.card:hover > .textBox {
+  opacity: 1;
+}
+
+.card:hover > .img {
+  height: 65%;
+  filter: blur(7px);
+  animation: anim 3s infinite;
+}
+
+@keyframes anim {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.card:hover {
+  transform: scale(1.04) rotate(-1deg);
+}
+
 span {
   margin: 2rem;
   padding: 0.3rem;
@@ -85,6 +177,7 @@ div {
   width: 80%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   margin-top: 10vh;
 }
 .Container {
@@ -109,5 +202,6 @@ div {
 h1 {
   margin: 0.4rem;
   width: 80%;
+  color: #c0c0c0;
 }
 </style>

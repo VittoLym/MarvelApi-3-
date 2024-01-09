@@ -10,15 +10,12 @@ onMounted(async () => {})
 onUpdated(() => {
   heroesApi.value = props.props
   filteredComics.value = props.filteredComics
-  console.log(props.filteredComics)
 })
 </script>
 <template>
   <div
     v-if="
-      filteredComics.length >= 0 &&
-      comicsApi.length >= 1 &&
-      filteredComics[0] !== 'no hay coincidencias'
+      filteredComics.length >= 0 && comicsApi.length >= 1 && typeof filteredComics[0] !== 'string'
     "
   >
     <ul v-if="filteredComics.length >= 1" class="if">

@@ -14,11 +14,7 @@ onUpdated(() => {
 </script>
 <template>
   <div
-    v-if="
-      filteredHero.length >= 0 &&
-      heroesApi.length >= 1 &&
-      filteredHero[0] !== 'no hay coincidencias'
-    "
+    v-if="filteredHero.length >= 0 && heroesApi.length >= 1 && typeof filteredHero[0] !== 'string'"
   >
     <ul v-if="filteredHero.length >= 1" class="if">
       <li
