@@ -1,29 +1,26 @@
 <script setup>
 import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['filteredEvents', 'eventsApi', 'filteredHero'])
-const eventsApi = ref([])
-const filteredHero = ref([])
-const filteredEvents = ref([])
+const props = defineProps(['seriesApi', 'filteredSeries'])
+const serieseApi = ref([])
+const filteredSeries = ref([])
 
-onMounted(async () => {})
+onMounted(() => {})
 
 onUpdated(() => {
-  eventsApi.value = props.eventsApi
-  filteredHero.value = props.filteredHero
-  filteredEvents.value = props.filteredEvents
-  console.log('mandioca')
+  serieseApi.value = props.seriesApi
+  filteredSeries.value = props.filteredSeries
 })
 </script>
 <template>
   <div
     v-if="
-      filteredEvents.length >= 0 && eventsApi.length >= 1 && typeof filteredEvents[0] !== 'string'
+      filteredSeries.length >= 0 && seriesApi.length >= 1 && typeof filteredSeries[0] !== 'string'
     "
   >
-    <ul v-if="filteredEvents.length >= 1" class="if">
+    <ul v-if="filteredSeries.length >= 1" class="if">
       <li
-        v-for="i in filteredEvents.slice(0, 6)"
+        v-for="i in filteredSeries.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
@@ -32,9 +29,9 @@ onUpdated(() => {
         </div>
       </li>
     </ul>
-    <ul v-else-if="eventsApi.length >= 0" class="else-if">
+    <ul v-else-if="seriesApi.length >= 0" class="else-if">
       <li
-        v-for="i in eventsApi.slice(0, 6)"
+        v-for="i in seriesApi.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
@@ -46,7 +43,7 @@ onUpdated(() => {
   </div>
   <div v-else>
     <ul>
-      <p>{{ filteredEvents[0] }}</p>
+      <p>{{ filteredSeries[0] }}</p>
     </ul>
   </div>
 </template>

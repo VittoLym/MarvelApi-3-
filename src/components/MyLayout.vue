@@ -1,9 +1,10 @@
 <script setup>
 import { onUpdated } from 'vue'
 
-import MyCharacters from './MyCharacters.vue'
-import MyComics from './MyComics.vue'
-import MyEvents from './MyEvents.vue'
+import MyCharacters from './Layout/MyCharacters.vue'
+import MyComics from './Layout/MyComics.vue'
+import MyEvents from './Layout/MyEvents.vue'
+import MySeries from './Layout/MySeries.vue'
 
 const props = defineProps([
   'heroesApi',
@@ -11,9 +12,11 @@ const props = defineProps([
   'comicsApi',
   'filteredComics',
   'eventsApi',
-  'filteredEvents'
+  'filteredEvents',
+  'seriesApi',
+  'filteredSeries'
 ])
-const titles = ['Characters', 'Comics', 'Events']
+const titles = ['Characters', 'Comics', 'Events', 'Series']
 
 onUpdated(() => {})
 </script>
@@ -35,9 +38,13 @@ onUpdated(() => {})
     />
     <MyEvents
       :eventsApi="props.eventsApi"
-      :filteredHero="props.filteredHero"
       :filteredEvents="props.filteredEvents"
       v-if="i === 'Events'"
+    />
+    <MySeries
+      :seriesApi="props.seriesApi"
+      :filteredSeries="props.filteredSeries"
+      v-if="i === 'Series'"
     />
   </article>
 </template>

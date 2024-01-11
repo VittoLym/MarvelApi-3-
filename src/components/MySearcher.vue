@@ -8,93 +8,38 @@ import MyFilters from './MyFilters.vue'
 const characters = ref([])
 const comics = ref([])
 const events = ref([])
+const series = ref([])
 const inputText = ref('')
+const filteredProps = ref([])
 const filters = ref(false)
-const props = defineProps(['heroesApi', 'comicsApi', 'eventsApi'])
+const props = defineProps(['heroesApi', 'comicsApi', 'eventsApi', 'seriesApi'])
 const emits = defineEmits(['filteredHero', 'filteredComics', 'filteredEvents'])
-
 const searchHero = () => {
   if (inputText.value !== '') {
-    const filteredArray = characters.value.filter((i) =>
-      i.name.toLowerCase().startsWith(inputText.value.toLowerCase())
-    )
-    const filteredComic = comics.value.filter((i) =>
-      i.title.toLowerCase().startsWith(inputText.value.toLowerCase())
-    )
-    const filteredEvents = events.value.filter((i) =>
-      i.title.toLowerCase().startsWith(inputText.value.toLocaleLowerCase())
-    )
-
-    if (filteredComic.length == 0) {
-      filteredComic.value = 'there are no comics'
-      if (filteredArray.length == 0) {
-        filteredArray.value = 'there are no characters'
-        if (filteredEvents.length == 0) {
-          filteredEvents.value = 'there are no events'
-          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents.value])
-        } else {
-          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents])
-        }
-      } else if (filteredEvents.length == 0) {
-        filteredEvents.value = 'there are no events'
-        if (filteredArray.length == 0) {
-          filteredArray.value = 'there are no characters'
-          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents.value])
-        } else {
-          emits('filteredHero', [filteredComic.value, filteredArray, filteredEvents.value])
-        }
-      } else {
-        emits('filteredHero', [filteredComic.value, filteredArray, filteredEvents])
+    const propsToFilter = [comics, events, series]
+    filteredProps.value = propsToFilter.map((prop) => {
+      let filteredData = prop.value.filter((item) =>
+        item.title?.toLowerCase().startsWith(inputText.value.toLowerCase())
+      )
+      if (filteredData.length === 0) {
+        filteredData = `there are no coicidencia`
       }
-    } else if (filteredArray.length == 0) {
-      filteredArray.value = 'there are no characters'
-      if (filteredComic.length == 0) {
-        filteredComic.value = 'there are no comics'
-        if (filteredEvents.length == 0) {
-          filteredEvents.value = 'there are no events'
-          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents.value])
-        } else {
-          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents])
-        }
-      } else if (filteredEvents.length == 0) {
-        filteredEvents.value = 'there are no events'
-        if (filteredComic.length == 0) {
-          filteredComic.value = 'there are no comics'
-          emits('filteredHero', [filteredComic.values, filteredArray.values, filteredEvents.value])
-        } else {
-          emits('filteredHero', [filteredComic, filteredArray.value, filteredEvents.value])
-        }
-      } else {
-        emits('filteredHero', [filteredComic, filteredArray.value, filteredEvents])
-      }
-    } else if (filteredEvents.length == 0) {
-      filteredEvents.value = 'there are no events'
-      if (filteredComic.length == 0) {
-        filteredComic.value = 'there are no comics'
-        if (filteredArray.length == 0) {
-          filteredArray.value = 'there are no characters'
-          emits('filteredHero', [filteredComic.values, filteredArray.value, filteredEvents.value])
-        } else {
-          emits('filteredHero', [filteredComic.value, filteredArray, filteredEvents.value])
-        }
-      } else if (filteredArray.length == 0) {
-        filteredArray.value = 'there are no characters'
-        if (filteredComic.length == 0) {
-          filteredComic.value = 'there are no comics'
-          emits('filteredHero', [filteredComic.value, filteredArray.value, filteredEvents.value])
-        } else {
-          emits('filteredHero', [filteredComic, filteredArray.value, filteredEvents.value])
-        }
-      } else {
-        emits('filteredHero', [filteredComic, filteredArray, filteredEvents.value])
-      }
+      return filteredData
+    })
+    let filteredArray = characters.value.filter((i) =>
+      i.name?.toLowerCase().startsWith(inputText.value.toLowerCase())
+    )
+    if (filteredArray.length <= 0) {
+      filteredArray = `there are no coincidence`
+      filteredProps.value.splice(1, 0, filteredArray)
     } else {
-      emits('filteredHero', [filteredComic, filteredArray, filteredEvents])
+      filteredProps.value.splice(1, 0, filteredArray)
     }
+    emits('filteredHero', filteredProps)
   }
-  if (inputText.value == '') {
-    const filteredArray = []
-    emits('filteredHero', filteredArray)
+  if (inputText.value === '') {
+    filteredProps.value = []
+    emits('filteredHero', filteredProps)
   }
 }
 const optionsFinder = () => {
@@ -105,6 +50,7 @@ onUpdated(() => {
   characters.value = props.heroesApi
   comics.value = props.comicsApi
   events.value = props.eventsApi
+  series.value = props.seriesApi
 })
 </script>
 <template>
@@ -117,7 +63,7 @@ onUpdated(() => {
         @keydown.enter="searchHero"
         :ref="inputText"
         v-model="inputText"
-        placeholder="Hulk, Ironman, Red Richards..."
+        placeholder="Hulk, Ironman, Reed Richards..."
       />
       <article class="Icons">
         <img @click="searchHero" class="icon" :src="SearchIcon" alt="find hero" />

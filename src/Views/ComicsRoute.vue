@@ -1,16 +1,15 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue'
-import { API_KEY } from '../utils/const'
+import { API_COMICS } from '../utils/const'
 
 import MyNavbar from '../components/MyNavbar.vue'
 import MySearcher from '../components/MySearcher.vue'
 import Back from '../assets/back.svg'
 
-const heroesApi = ref([])
+const comicsApi = ref([])
 const filteredHero = ref([])
 const filteredComics = ref([])
 const filteredEvents = ref([])
-const filteredSeries = ref([])
 
 async function fetchData(url) {
   try {
@@ -23,6 +22,7 @@ async function fetchData(url) {
   }
 }
 function handleEmit(value) {
+  console.log(value)
   try {
     if (value.length == 0) {
       filteredComics.value = value
@@ -30,9 +30,7 @@ function handleEmit(value) {
       filteredHero.value = value
     } else if (value.length == 3) {
       for (let i of value) {
-        if (value.indexOf(i) === 3) {
-          typeof i === 'string' ? (filteredSeries.value = [i]) : (filteredSeries.value = i)
-        } else if (value.indexOf(i) === 2) {
+        if (value.indexOf(i) === 2) {
           typeof i === 'string' ? (filteredEvents.value = [i]) : (filteredEvents.value = i)
         } else if (value.indexOf(i) === 1) {
           typeof i === 'string' ? (filteredHero.value = [i]) : (filteredHero.value = i)
@@ -42,7 +40,6 @@ function handleEmit(value) {
           filteredComics.value = i
           filteredHero.value = i
           filteredEvents.value = i
-          filteredSeries.value = i
         }
       }
     }
@@ -52,7 +49,7 @@ function handleEmit(value) {
 }
 
 onBeforeMount(async () => {
-  heroesApi.value = await fetchData(API_KEY)
+  comicsApi.value = await fetchData(API_COMICS)
 })
 </script>
 <template>
@@ -62,39 +59,38 @@ onBeforeMount(async () => {
       <router-link to="/">
         <img class="IMG" :src="Back" alt="back" />
       </router-link>
-      <h1>Characters</h1>
+      <h1>Comics</h1>
     </div>
     <MySearcher
-      :heroesApi="heroesApi"
-      :comicsApi="filteredComics"
+      :heroesApi="filteredHero"
+      :comicsApi="comicsApi"
       :eventsApi="filteredEvents"
-      :seriesApi="filteredSeries"
       @filtered-hero="handleEmit"
     />
-    <main class="characters" v-if="filteredHero <= 0">
+    <main class="characters" v-if="filteredComics <= 0">
       <ul
-        v-for="i in heroesApi"
+        v-for="i in comicsApi"
         :key="i"
         class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <article class="textBox">
           <li class="text head">
-            {{ i.name }}
+            {{ i.title }}
           </li>
         </article>
       </ul>
     </main>
     <main class="characters" v-else>
       <ul
-        v-for="i in filteredHero"
+        v-for="i in filteredComics"
         :key="i"
         class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <article class="textBox">
           <li class="text head">
-            {{ i.name }}
+            {{ i.title }}
           </li>
         </article>
       </ul>

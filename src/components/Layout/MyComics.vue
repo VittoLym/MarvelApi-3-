@@ -2,13 +2,11 @@
 import { ref, onMounted, onUpdated } from 'vue'
 
 const props = defineProps(['filteredHero', 'comicsApi', 'filteredComics'])
-const heroesApi = ref([])
 const filteredComics = ref([])
 
 onMounted(async () => {})
 
 onUpdated(() => {
-  heroesApi.value = props.props
   filteredComics.value = props.filteredComics
 })
 </script>

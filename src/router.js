@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import HomeRoute from './Views/HomeRoute.vue'
-import CharacterRoute from './Views/CharactersRoute.vue'
+import HomeRoute from './Views/HomeRoute.vue';
+import CharacterRoute from './Views/CharactersRoute.vue';
+import ComicRoute from './Views/ComicsRoute.vue';
+import EventRoute from './Views/EventsRoute.vue';
 
 const routes = [
     {
@@ -13,6 +15,16 @@ const routes = [
         path:'/characters',
         name:'Characters',
         component: CharacterRoute,
+    },
+    {
+        path: '/comics',
+        name:'Comics',
+        component: ComicRoute,
+    },
+    {
+        path: '/events',
+        name: 'Events',
+        component: EventRoute
     }
 ]
 

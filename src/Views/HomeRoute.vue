@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { API_KEY, API_COMICS, API_EVENTS } from '../utils/const.js'
+import { ref, onBeforeMount, onBeforeUnmount } from 'vue'
+import { API_KEY, API_COMICS, API_EVENTS, API_SERIES } from '../utils/const.js'
 
 import MyHeader from '../components/MyHeader.vue'
 import MyNavbar from '../components/MyNavbar.vue'
@@ -8,13 +8,15 @@ import MySearcher from '../components/MySearcher.vue'
 import MyLayout from '../components/MyLayout.vue'
 
 const heroesApi = ref([])
+const comicsApi = ref([])
+const eventsApi = ref([])
+const seriesApi = ref([])
 const filteredHero = ref([])
 const filteredComics = ref([])
 const filteredEvents = ref([])
+const filteredSeries = ref([])
 const vMenu = ref(false)
 const headerRef = ref(null)
-const comicsApi = ref([])
-const eventsApi = ref([])
 
 async function fetchData(url) {
   try {
@@ -27,26 +29,23 @@ async function fetchData(url) {
   }
 }
 
-function handleEmit(value) {
+function handleEmit(ref) {
+  const value = ref.value
+  console.log(value)
   try {
     if (value.length == 0) {
       filteredComics.value = value
       filteredEvents.value = value
       filteredHero.value = value
-    } else if (value.length == 3) {
-      for (let i of value) {
-        if (value.indexOf(i) === 2) {
-          typeof i === 'string' ? (filteredEvents.value = [i]) : (filteredEvents.value = i)
-        } else if (value.indexOf(i) === 1) {
-          typeof i === 'string' ? (filteredHero.value = [i]) : (filteredHero.value = i)
-        } else if (value.indexOf(i) === 0) {
-          typeof i === 'string' ? (filteredComics.value = [i]) : (filteredComics.value = i)
-        } else {
-          filteredComics.value = i
-          filteredHero.value = i
-          filteredEvents.value = i
-        }
-      }
+      filteredSeries.value = value
+    } else if (value.length == 4) {
+      const [comics, hero, events, series] = value.map((item) =>
+        typeof item === 'string' ? [item] : item
+      )
+      filteredComics.value = comics
+      filteredEvents.value = events
+      filteredHero.value = hero
+      filteredSeries.value = series
     }
   } catch (e) {
     throw new Error(e)
@@ -59,18 +58,19 @@ function handleEmitComics(value) {
 
 const changeVisibility = () => {
   const header = headerRef.value.$el.getBoundingClientRect().top
-  if (header >= -500) {
+  if (header >= -520) {
     vMenu.value = false
-  } else if (header <= -530) {
+  } else if (header <= -523) {
     vMenu.value = true
   }
 }
 
-onMounted(async () => {
-  heroesApi.value = await fetchData(API_KEY)
+onBeforeMount(async () => {
   addEventListener('scroll', changeVisibility)
+  heroesApi.value = await fetchData(API_KEY)
   comicsApi.value = await fetchData(API_COMICS)
   eventsApi.value = await fetchData(API_EVENTS)
+  seriesApi.value = await fetchData(API_SERIES)
 })
 
 onBeforeUnmount(() => {
@@ -85,6 +85,7 @@ onBeforeUnmount(() => {
       :eventsApi="eventsApi"
       :comicsApi="comicsApi"
       :heroesApi="heroesApi"
+      :seriesApi="seriesApi"
       @filtered-hero="handleEmit"
       @filtered-comics="handleEmitComics"
     />
@@ -92,9 +93,11 @@ onBeforeUnmount(() => {
       :eventsApi="eventsApi"
       :comicsApi="comicsApi"
       :heroesApi="heroesApi"
+      :seriesApi="seriesApi"
       :filteredHero="filteredHero"
       :filteredComics="filteredComics"
       :filteredEvents="filteredEvents"
+      :filteredSeries="filteredSeries"
     />
   </main>
 </template>
