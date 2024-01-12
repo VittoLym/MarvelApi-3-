@@ -31,7 +31,6 @@ async function fetchData(url) {
 
 function handleEmit(ref) {
   const value = ref.value
-  console.log(value)
   try {
     if (value.length == 0) {
       filteredComics.value = value

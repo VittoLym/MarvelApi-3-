@@ -10,6 +10,7 @@ const comicsApi = ref([])
 const filteredHero = ref([])
 const filteredComics = ref([])
 const filteredEvents = ref([])
+const filteredSeries = ref([])
 
 async function fetchData(url) {
   try {
@@ -21,16 +22,19 @@ async function fetchData(url) {
     console.log(error)
   }
 }
-function handleEmit(value) {
-  console.log(value)
+function handleEmit(ref) {
+  const value = ref.value
   try {
     if (value.length == 0) {
       filteredComics.value = value
       filteredEvents.value = value
       filteredHero.value = value
-    } else if (value.length == 3) {
+      filteredSeries.value = value
+    } else if (value.length == 4) {
       for (let i of value) {
-        if (value.indexOf(i) === 2) {
+        if (value.indexOf(i) === 3) {
+          typeof i === 'string' ? (filteredSeries.value = [i]) : (filteredSeries.value = i)
+        } else if (value.indexOf(i) === 2) {
           typeof i === 'string' ? (filteredEvents.value = [i]) : (filteredEvents.value = i)
         } else if (value.indexOf(i) === 1) {
           typeof i === 'string' ? (filteredHero.value = [i]) : (filteredHero.value = i)
@@ -40,6 +44,7 @@ function handleEmit(value) {
           filteredComics.value = i
           filteredHero.value = i
           filteredEvents.value = i
+          filteredSeries.value = i
         }
       }
     }
@@ -65,6 +70,7 @@ onBeforeMount(async () => {
       :heroesApi="filteredHero"
       :comicsApi="comicsApi"
       :eventsApi="filteredEvents"
+      :seriesApi="filteredSeries"
       @filtered-hero="handleEmit"
     />
     <main class="characters" v-if="filteredComics <= 0">

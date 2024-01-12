@@ -10,11 +10,11 @@
       </router-link>
     </article>
     <article>
-      <router-link to="/characters">
+      <router-link to="/comics">
         <p>Comics</p>
       </router-link>
-      <router-link to="/characters">
-        <p>Movies</p>
+      <router-link to="/series">
+        <p>Series</p>
       </router-link>
     </article>
   </nav>

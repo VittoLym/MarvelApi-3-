@@ -4,6 +4,7 @@ import HomeRoute from './Views/HomeRoute.vue';
 import CharacterRoute from './Views/CharactersRoute.vue';
 import ComicRoute from './Views/ComicsRoute.vue';
 import EventRoute from './Views/EventsRoute.vue';
+import SeriesRoute from './Views/SeriesRoute.vue'
 
 const routes = [
     {
@@ -25,6 +26,11 @@ const routes = [
         path: '/events',
         name: 'Events',
         component: EventRoute
+    },
+    {
+        path: '/series',
+        name: 'Series',
+        component: SeriesRoute
     }
 ]
 

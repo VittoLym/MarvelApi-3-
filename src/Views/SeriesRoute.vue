@@ -1,12 +1,12 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue'
-import { API_KEY } from '../utils/const'
+import { API_SERIES } from '../utils/const'
 
 import MyNavbar from '../components/MyNavbar.vue'
 import MySearcher from '../components/MySearcher.vue'
 import Back from '../assets/back.svg'
 
-const heroesApi = ref([])
+const eventsApi = ref([])
 const filteredHero = ref([])
 const filteredComics = ref([])
 const filteredEvents = ref([])
@@ -29,6 +29,7 @@ function handleEmit(ref) {
       filteredComics.value = value
       filteredEvents.value = value
       filteredHero.value = value
+      filteredSeries.value = value
     } else if (value.length == 4) {
       for (let i of value) {
         if (value.indexOf(i) === 3) {
@@ -53,7 +54,7 @@ function handleEmit(ref) {
 }
 
 onBeforeMount(async () => {
-  heroesApi.value = await fetchData(API_KEY)
+  eventsApi.value = await fetchData(API_SERIES)
 })
 </script>
 <template>
@@ -63,39 +64,39 @@ onBeforeMount(async () => {
       <router-link to="/">
         <img class="IMG" :src="Back" alt="back" />
       </router-link>
-      <h1>Characters</h1>
+      <h1>Series</h1>
     </div>
     <MySearcher
-      :heroesApi="heroesApi"
+      :heroesApi="filteredHero"
       :comicsApi="filteredComics"
-      :eventsApi="filteredEvents"
+      :eventsApi="eventsApi"
       :seriesApi="filteredSeries"
       @filtered-hero="handleEmit"
     />
-    <main class="characters" v-if="filteredHero <= 0">
+    <main class="characters" v-if="filteredEvents <= 0">
       <ul
-        v-for="i in heroesApi"
+        v-for="i in eventsApi"
         :key="i"
         class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <article class="textBox">
           <li class="text head">
-            {{ i.name }}
+            {{ i.title }}
           </li>
         </article>
       </ul>
     </main>
     <main class="characters" v-else>
       <ul
-        v-for="i in filteredHero"
+        v-for="i in filteredEvents"
         :key="i"
         class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <article class="textBox">
           <li class="text head">
-            {{ i.name }}
+            {{ i.title }}
           </li>
         </article>
       </ul>
@@ -235,6 +236,7 @@ div {
   border-radius: 0.8rem;
   box-shadow: 0 0 7px #00000076;
   width: 100%;
+  height: max-content;
   width: 80%;
   display: flex;
   flex-wrap: wrap;

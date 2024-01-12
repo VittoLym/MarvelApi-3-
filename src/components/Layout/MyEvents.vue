@@ -8,7 +8,6 @@ const filteredEvents = ref([])
 onMounted(async () => {})
 
 onUpdated(() => {
-  console.log(props.filteredEvents)
   eventsApi.value = props.eventsApi
   filteredEvents.value = props.filteredEvents
 })
