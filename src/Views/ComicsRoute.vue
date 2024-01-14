@@ -4,6 +4,7 @@ import { API_COMICS } from '../utils/const'
 
 import MyNavbar from '../components/MyNavbar.vue'
 import MySearcher from '../components/MySearcher.vue'
+import MyCardInfo from '../components/MyCardInfo.vue'
 import Back from '../assets/back.svg'
 
 const comicsApi = ref([])
@@ -11,6 +12,8 @@ const filteredHero = ref([])
 const filteredComics = ref([])
 const filteredEvents = ref([])
 const filteredSeries = ref([])
+const heroData = ref('')
+const showCard = ref(false)
 
 async function fetchData(url) {
   try {
@@ -21,6 +24,15 @@ async function fetchData(url) {
   } catch (error) {
     console.log(error)
   }
+}
+function ChangeCardVisibility(value) {
+  const name = value.target.innerText
+  const filterName = comicsApi.value.filter((i) => i.title == name)
+  heroData.value = filterName[0]
+  showCard.value = !showCard.value
+}
+function closeCard(value) {
+  showCard.value = value
 }
 function handleEmit(ref) {
   const value = ref.value
@@ -73,10 +85,12 @@ onBeforeMount(async () => {
       :seriesApi="filteredSeries"
       @filtered-hero="handleEmit"
     />
+    <MyCardInfo v-if="showCard" :heroData="heroData" :showCard="closeCard" />
     <main class="characters" v-if="filteredComics <= 0">
       <ul
         v-for="i in comicsApi"
         :key="i"
+        @click="ChangeCardVisibility"
         class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
@@ -91,6 +105,7 @@ onBeforeMount(async () => {
       <ul
         v-for="i in filteredComics"
         :key="i"
+        @click="ChangeCardVisibility"
         class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >

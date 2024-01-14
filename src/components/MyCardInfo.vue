@@ -17,7 +17,7 @@ onBeforeMount(() => {
   <article>
     <img class="close" @click="handleVisibility" :src="Close" alt="Close Card" />
     <img class="pj" :src="`${hero.thumbnail.path}.${hero.thumbnail.extension}`" alt="mantecol" />
-    <h1>{{ hero.name }}</h1>
+    <h1>{{ hero.name ? hero.name : hero.title }}</h1>
     <p>{{ hero.description }}</p>
     <div class="buttons">
       <button class="button">comics</button>
@@ -52,9 +52,8 @@ article {
 }
 h1 {
   text-align: center;
-  width: 100%;
-  margin: 0;
-  margin-bottom: 0.4rem;
+  width: 80%;
+  margin: 0 10%;
   margin-top: 0.6rem;
 }
 p {
@@ -62,6 +61,7 @@ p {
   margin: 0;
   margin-right: 10%;
   margin-bottom: 0.8rem;
+  overflow-y: auto;
 }
 .pj {
   height: 40%;
