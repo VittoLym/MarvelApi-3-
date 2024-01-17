@@ -28,6 +28,7 @@ onBeforeMount(() => {
 </template>
 <style scoped>
 article {
+  left: 35%;
   color: #c0c0c0;
   top: 18vh;
   position: fixed;

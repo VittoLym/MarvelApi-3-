@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['filteredEvents', 'eventsApi', 'filteredHero'])
+const props = defineProps(['filteredEvents', 'eventsApi', 'ChangeCardVisibility'])
 const eventsApi = ref([])
 const filteredEvents = ref([])
 
@@ -20,6 +20,7 @@ onUpdated(() => {
   >
     <ul v-if="filteredEvents.length >= 1" class="if">
       <li
+        @click="ChangeCardVisibility"
         v-for="i in filteredEvents.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
@@ -31,6 +32,7 @@ onUpdated(() => {
     </ul>
     <ul v-else-if="eventsApi.length >= 0" class="else-if">
       <li
+        @click="ChangeCardVisibility"
         v-for="i in eventsApi.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"

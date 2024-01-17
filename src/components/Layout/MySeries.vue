@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['seriesApi', 'filteredSeries'])
+const props = defineProps(['seriesApi', 'filteredSeries', 'ChangeCardVisibility'])
 const serieseApi = ref([])
 const filteredSeries = ref([])
 
@@ -20,6 +20,7 @@ onUpdated(() => {
   >
     <ul v-if="filteredSeries.length >= 1" class="if">
       <li
+        @click="ChangeCardVisibility"
         v-for="i in filteredSeries.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
@@ -31,6 +32,7 @@ onUpdated(() => {
     </ul>
     <ul v-else-if="seriesApi.length >= 0" class="else-if">
       <li
+        @click="ChangeCardVisibility"
         v-for="i in seriesApi.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"

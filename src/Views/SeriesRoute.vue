@@ -27,9 +27,10 @@ async function fetchData(url) {
 }
 function ChangeCardVisibility(value) {
   const name = value.target.innerText
-  const filterName = eventsApi.value.filter((i) => i.title == name)
+  const filterName = eventsApi.value.filter((i) => i.title.trim() == name)
   heroData.value = filterName[0]
   showCard.value = !showCard.value
+  console.log(name)
 }
 function closeCard(value) {
   showCard.value = value

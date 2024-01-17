@@ -55,8 +55,9 @@ function handleEmit(ref) {
   }
 }
 function ChangeCardVisibility(value) {
+  console.log(value)
   const name = value.target.innerText
-  const filterName = heroesApi.value.filter((i) => i.name == name)
+  const filterName = heroesApi.value.filter((i) => i.name.trim() == name)
   heroData.value = filterName[0]
   showCard.value = !showCard.value
 }
@@ -104,7 +105,7 @@ onBeforeMount(async () => {
       <ul
         v-for="i in filteredHero"
         :key="i"
-        @click="ChangeCardVisibility(i.name)"
+        @click="ChangeCardVisibility"
         class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >

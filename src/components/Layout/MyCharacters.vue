@@ -1,10 +1,9 @@
 <script setup>
 import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['props', 'filteredHero'])
+const props = defineProps(['props', 'filteredHero', 'ChangeCardVisibility'])
 const heroesApi = ref([])
 const filteredHero = ref([])
-
 onMounted(async () => {})
 
 onUpdated(() => {
@@ -18,6 +17,7 @@ onUpdated(() => {
   >
     <ul v-if="filteredHero.length >= 1" class="if">
       <li
+        @click="props.ChangeCardVisibility"
         v-for="i in filteredHero.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
@@ -29,6 +29,7 @@ onUpdated(() => {
     </ul>
     <ul v-else-if="heroesApi.length >= 0" class="else-if">
       <li
+        @click="props.ChangeCardVisibility"
         v-for="i in heroesApi.slice(0, 6)"
         :key="i.ul"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"

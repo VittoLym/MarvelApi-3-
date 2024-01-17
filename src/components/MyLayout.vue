@@ -1,10 +1,11 @@
 <script setup>
-import { onUpdated } from 'vue'
+import { onUpdated, ref } from 'vue'
 
 import MyCharacters from './Layout/MyCharacters.vue'
 import MyComics from './Layout/MyComics.vue'
 import MyEvents from './Layout/MyEvents.vue'
 import MySeries from './Layout/MySeries.vue'
+import MyCardInfo from './MyCardInfo.vue'
 
 const props = defineProps([
   'heroesApi',
@@ -16,9 +17,30 @@ const props = defineProps([
   'seriesApi',
   'filteredSeries'
 ])
+
+const heroData = ref('')
+const showCard = ref(false)
 const titles = ['Characters', 'Comics', 'Events', 'Series']
 
-onUpdated(() => {})
+function ChangeCardVisibility(value) {
+  const name = value.target.innerText
+
+  const apiProps = Object.keys(props).filter((prop) => prop.includes('Api'))
+  for (let apiProp of apiProps) {
+    const filteredData = props[apiProp].filter(
+      (i) => i?.title?.trim() === name || i?.name?.trim() === name
+    )
+    console.log(filteredData[0])
+    if (filteredData.length > 0) {
+      heroData.value = filteredData[0]
+      showCard.value = !showCard.value
+    }
+  }
+}
+
+function closeCard(value) {
+  showCard.value = value
+}
 </script>
 <template>
   <article class="title" v-for="i in titles" :key="i">
@@ -26,22 +48,27 @@ onUpdated(() => {})
     <router-link :to="'/' + i">
       <span>See More</span>
     </router-link>
+    <MyCardInfo v-if="showCard" :heroData="heroData" :showCard="closeCard" />
     <MyCharacters
+      :ChangeCardVisibility="ChangeCardVisibility"
       :props="props.heroesApi"
       :filteredHero="props.filteredHero"
       v-if="i === 'Characters'"
     />
     <MyComics
+      :ChangeCardVisibility="ChangeCardVisibility"
       :comicsApi="props.comicsApi"
       :filteredComics="props.filteredComics"
       v-if="i === 'Comics'"
     />
     <MyEvents
+      :ChangeCardVisibility="ChangeCardVisibility"
       :eventsApi="props.eventsApi"
       :filteredEvents="props.filteredEvents"
       v-if="i === 'Events'"
     />
     <MySeries
+      :ChangeCardVisibility="ChangeCardVisibility"
       :seriesApi="props.seriesApi"
       :filteredSeries="props.filteredSeries"
       v-if="i === 'Series'"
