@@ -1,19 +1,21 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue'
-import { API_SERIES } from '../utils/const'
+import { useRoute } from 'vue-router'
 
 import MyNavbar from '../components/MyNavbar.vue'
 import MySearcher from '../components/MySearcher.vue'
 import MyCardInfo from '../components/MyCardInfo.vue'
 import Back from '../assets/back.svg'
 
-const eventsApi = ref([])
+const heroesApi = ref([])
 const filteredHero = ref([])
 const filteredComics = ref([])
 const filteredEvents = ref([])
 const filteredSeries = ref([])
 const heroData = ref('')
 const showCard = ref(false)
+const title = ref('')
+const route = useRoute()
 
 async function fetchData(url) {
   try {
@@ -25,17 +27,6 @@ async function fetchData(url) {
     console.log(error)
   }
 }
-function ChangeCardVisibility(value) {
-  const name = value.target.innerText
-  const filterName = eventsApi.value.filter((i) => i.title.trim() == name)
-  heroData.value = filterName[0]
-  showCard.value = !showCard.value
-  console.log(name)
-}
-function closeCard(value) {
-  showCard.value = value
-}
-
 function handleEmit(ref) {
   const value = ref.value
   try {
@@ -43,23 +34,43 @@ function handleEmit(ref) {
       filteredComics.value = value
       filteredEvents.value = value
       filteredHero.value = value
-      filteredSeries.value = value
     } else if (value.length == 4) {
-      const [comics, hero, events, series] = value.map((item) =>
-        typeof item === 'string' ? [item] : item
-      )
-      filteredComics.value = comics
-      filteredEvents.value = events
-      filteredHero.value = hero
-      filteredSeries.value = series
+      for (let i of value) {
+        if (value.indexOf(i) === 3) {
+          typeof i === 'string' ? (filteredSeries.value = [i]) : (filteredSeries.value = i)
+        } else if (value.indexOf(i) === 2) {
+          typeof i === 'string' ? (filteredEvents.value = [i]) : (filteredEvents.value = i)
+        } else if (value.indexOf(i) === 1) {
+          typeof i === 'string' ? (filteredHero.value = [i]) : (filteredHero.value = i)
+        } else if (value.indexOf(i) === 0) {
+          typeof i === 'string' ? (filteredComics.value = [i]) : (filteredComics.value = i)
+        } else {
+          filteredComics.value = i
+          filteredHero.value = i
+          filteredEvents.value = i
+          filteredSeries.value = i
+        }
+      }
     }
   } catch (e) {
     throw new Error(e)
   }
 }
+function ChangeCardVisibility(value) {
+  const name = value.target.innerText
+  const filterName = heroesApi.value.filter((i) => i.name.trim() == name)
+  heroData.value = filterName[0]
+  showCard.value = !showCard.value
+}
+function closeCard(value) {
+  showCard.value = value
+}
 
 onBeforeMount(async () => {
-  eventsApi.value = await fetchData(API_SERIES)
+  const indicator = route.path.split('/').slice(1, 2)
+  const i = indicator[0].toLowerCase()
+  const API_KEY = `https://gateway.marvel.com:443/v1/public/${i}/${route.params.id}/${route.params.title}?ts=1&apikey=107b8f25b03dca8471217bc4ed2395d8&hash=87fcd277a5d81647ea2a4684e6ee4baf`
+  heroesApi.value = await fetchData(API_KEY)
 })
 </script>
 <template>
@@ -69,44 +80,44 @@ onBeforeMount(async () => {
       <router-link to="/">
         <img class="IMG" :src="Back" alt="back" />
       </router-link>
-      <h1>Series</h1>
+      <h1>{{ title }}</h1>
     </div>
     <MySearcher
-      :heroesApi="filteredHero"
+      :heroesApi="heroesApi"
       :comicsApi="filteredComics"
-      :eventsApi="eventsApi"
+      :eventsApi="filteredEvents"
       :seriesApi="filteredSeries"
       @filtered-hero="handleEmit"
     />
     <MyCardInfo v-if="showCard" :heroData="heroData" :showCard="closeCard" />
-    <main class="characters" v-if="filteredSeries.length === 0">
+    <main class="characters" v-if="filteredHero.length === 0">
       <ul
-        v-for="i in eventsApi"
+        v-for="i in heroesApi"
         :key="i"
-        class="card img"
         @click="ChangeCardVisibility"
+        class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <article class="textBox">
           <li class="text head">
-            {{ i.title }}
+            {{ i.name }}
           </li>
         </article>
       </ul>
     </main>
-    <main class="characters" v-else-if="filteredSeries.length >= 1">
-      <p v-if="typeof filteredSeries[0] === 'string'">{{ filteredSeries[0] }}</p>
+    <main class="characters" v-else-if="filteredHero.length >= 1">
+      <p v-if="typeof filteredHero[0] === 'string'">{{ filteredHero[0] }}</p>
       <ul
         v-else
-        v-for="i in filteredEvents"
+        v-for="i in filteredHero"
         :key="i"
-        class="card img"
         @click="ChangeCardVisibility"
+        class="card img"
         :style="{ backgroundImage: `url(${i.thumbnail.path}.${i.thumbnail.extension})` }"
       >
         <article class="textBox">
           <li class="text head">
-            {{ i.title }}
+            {{ i.name }}
           </li>
         </article>
       </ul>
@@ -246,7 +257,6 @@ div {
   border-radius: 0.8rem;
   box-shadow: 0 0 7px #00000076;
   width: 100%;
-  height: max-content;
   width: 80%;
   display: flex;
   flex-wrap: wrap;

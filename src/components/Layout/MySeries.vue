@@ -1,9 +1,15 @@
 <script setup>
-import { ref, onMounted, onUpdated } from 'vue'
+import { ref, onMounted, onUpdated, defineEmits } from 'vue'
 
 const props = defineProps(['seriesApi', 'filteredSeries', 'ChangeCardVisibility'])
+const emits = defineEmits(['indicator'])
 const serieseApi = ref([])
 const filteredSeries = ref([])
+const indicator = ref('Series')
+
+const handleClick = () => {
+  emits('indicator', indicator)
+}
 
 onMounted(() => {})
 
@@ -17,6 +23,7 @@ onUpdated(() => {
     v-if="
       filteredSeries.length >= 0 && seriesApi.length >= 1 && typeof filteredSeries[0] !== 'string'
     "
+    @click="handleClick"
   >
     <ul v-if="filteredSeries.length >= 1" class="if">
       <li

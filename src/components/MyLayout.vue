@@ -1,5 +1,5 @@
 <script setup>
-import { onUpdated, ref } from 'vue'
+import { ref } from 'vue'
 
 import MyCharacters from './Layout/MyCharacters.vue'
 import MyComics from './Layout/MyComics.vue'
@@ -20,6 +20,7 @@ const props = defineProps([
 
 const heroData = ref('')
 const showCard = ref(false)
+const indicator = ref('')
 const titles = ['Characters', 'Comics', 'Events', 'Series']
 
 function ChangeCardVisibility(value) {
@@ -30,7 +31,6 @@ function ChangeCardVisibility(value) {
     const filteredData = props[apiProp].filter(
       (i) => i?.title?.trim() === name || i?.name?.trim() === name
     )
-    console.log(filteredData[0])
     if (filteredData.length > 0) {
       heroData.value = filteredData[0]
       showCard.value = !showCard.value
@@ -41,33 +41,40 @@ function ChangeCardVisibility(value) {
 function closeCard(value) {
   showCard.value = value
 }
+function handleIndicator(e) {
+  indicator.value = e.value
+}
 </script>
 <template>
+  <MyCardInfo v-if="showCard" :heroData="heroData" :showCard="closeCard" :indicator="indicator" />
   <article class="title" v-for="i in titles" :key="i">
     <p>{{ i }}</p>
     <router-link :to="'/' + i">
       <span>See More</span>
     </router-link>
-    <MyCardInfo v-if="showCard" :heroData="heroData" :showCard="closeCard" />
     <MyCharacters
+      @indicator="handleIndicator"
       :ChangeCardVisibility="ChangeCardVisibility"
       :props="props.heroesApi"
       :filteredHero="props.filteredHero"
       v-if="i === 'Characters'"
     />
     <MyComics
+      @indicator="handleIndicator"
       :ChangeCardVisibility="ChangeCardVisibility"
       :comicsApi="props.comicsApi"
       :filteredComics="props.filteredComics"
       v-if="i === 'Comics'"
     />
     <MyEvents
+      @indicator="handleIndicator"
       :ChangeCardVisibility="ChangeCardVisibility"
       :eventsApi="props.eventsApi"
       :filteredEvents="props.filteredEvents"
       v-if="i === 'Events'"
     />
     <MySeries
+      @indicator="handleIndicator"
       :ChangeCardVisibility="ChangeCardVisibility"
       :seriesApi="props.seriesApi"
       :filteredSeries="props.filteredSeries"

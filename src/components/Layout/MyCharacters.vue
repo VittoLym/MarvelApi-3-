@@ -1,10 +1,15 @@
 <script setup>
-import { ref, onMounted, onUpdated } from 'vue'
+import { ref, onUpdated, defineEmits } from 'vue'
 
+const emits = defineEmits(['indicator'])
 const props = defineProps(['props', 'filteredHero', 'ChangeCardVisibility'])
 const heroesApi = ref([])
 const filteredHero = ref([])
-onMounted(async () => {})
+const indicator = ref('Characters')
+
+const handleClick = () => {
+  emits('indicator', indicator)
+}
 
 onUpdated(() => {
   heroesApi.value = props.props
@@ -14,6 +19,7 @@ onUpdated(() => {
 <template>
   <div
     v-if="filteredHero.length >= 0 && heroesApi.length >= 1 && typeof filteredHero[0] !== 'string'"
+    @click="handleClick"
   >
     <ul v-if="filteredHero.length >= 1" class="if">
       <li

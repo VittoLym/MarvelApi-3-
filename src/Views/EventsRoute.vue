@@ -25,6 +25,7 @@ async function fetchData(url) {
     console.log(error)
   }
 }
+
 function handleEmit(ref) {
   const value = ref.value
   try {
@@ -34,22 +35,13 @@ function handleEmit(ref) {
       filteredHero.value = value
       filteredSeries.value = value
     } else if (value.length == 4) {
-      for (let i of value) {
-        if (value.indexOf(i) === 3) {
-          typeof i === 'string' ? (filteredSeries.value = [i]) : (filteredSeries.value = i)
-        } else if (value.indexOf(i) === 2) {
-          typeof i === 'string' ? (filteredEvents.value = [i]) : (filteredEvents.value = i)
-        } else if (value.indexOf(i) === 1) {
-          typeof i === 'string' ? (filteredHero.value = [i]) : (filteredHero.value = i)
-        } else if (value.indexOf(i) === 0) {
-          typeof i === 'string' ? (filteredComics.value = [i]) : (filteredComics.value = i)
-        } else {
-          filteredComics.value = i
-          filteredHero.value = i
-          filteredEvents.value = i
-          filteredSeries.value = i
-        }
-      }
+      const [comics, hero, events, series] = value.map((item) =>
+        typeof item === 'string' ? [item] : item
+      )
+      filteredComics.value = comics
+      filteredEvents.value = events
+      filteredHero.value = hero
+      filteredSeries.value = series
     }
   } catch (e) {
     throw new Error(e)
@@ -86,7 +78,7 @@ onBeforeMount(async () => {
       @filtered-hero="handleEmit"
     />
     <MyCardInfo v-if="showCard" :heroData="heroData" :showCard="closeCard" />
-    <main class="characters" v-if="filteredEvents <= 0">
+    <main class="characters" v-if="filteredEvents.length === 0">
       <ul
         v-for="i in eventsApi"
         :key="i"
@@ -101,8 +93,10 @@ onBeforeMount(async () => {
         </article>
       </ul>
     </main>
-    <main class="characters" v-else>
+    <main class="characters" v-else-if="filteredEvents.length >= 1">
+      <p v-if="typeof filteredEvents[0] === 'string'">{{ filteredEvents[0] }}</p>
       <ul
+        v-else
         v-for="i in filteredEvents"
         :key="i"
         @click="ChangeCardVisibility"
@@ -266,6 +260,10 @@ div {
   background-size: cover;
   border-radius: 0.6rem;
   box-shadow: 0 0 15px #000;
+}
+p {
+  color: #fff;
+  font-size: 1.6rem;
 }
 .Container li {
   list-style: none;

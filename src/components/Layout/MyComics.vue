@@ -1,8 +1,14 @@
 <script setup>
-import { ref, onMounted, onUpdated } from 'vue'
+import { ref, onMounted, onUpdated, defineEmits } from 'vue'
 
 const props = defineProps(['ChangeCardVisibility', 'comicsApi', 'filteredComics'])
+const emits = defineEmits(['indicator'])
 const filteredComics = ref([])
+const indicator = ref('Comics')
+
+const handleClick = () => {
+  emits('indicator', indicator)
+}
 
 onMounted(async () => {})
 
@@ -15,6 +21,7 @@ onUpdated(() => {
     v-if="
       filteredComics.length >= 0 && comicsApi.length >= 1 && typeof filteredComics[0] !== 'string'
     "
+    @click="handleClick"
   >
     <ul v-if="filteredComics.length >= 1" class="if">
       <li

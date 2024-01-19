@@ -1,9 +1,15 @@
 <script setup>
-import { ref, onMounted, onUpdated } from 'vue'
+import { ref, onMounted, onUpdated, defineEmits } from 'vue'
 
 const props = defineProps(['filteredEvents', 'eventsApi', 'ChangeCardVisibility'])
+const emits = defineEmits(['indicator'])
 const eventsApi = ref([])
 const filteredEvents = ref([])
+const indicator = ref('Events')
+
+const handleClick = () => {
+  emits('indicator', indicator)
+}
 
 onMounted(async () => {})
 
@@ -17,6 +23,7 @@ onUpdated(() => {
     v-if="
       filteredEvents.length >= 0 && eventsApi.length >= 1 && typeof filteredEvents[0] !== 'string'
     "
+    @click="handleClick"
   >
     <ul v-if="filteredEvents.length >= 1" class="if">
       <li

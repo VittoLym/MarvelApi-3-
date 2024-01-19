@@ -1,9 +1,10 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount, ref, onUpdated } from 'vue'
 import Close from '../assets/close.svg'
 
-const props = defineProps(['heroData', 'showCard'])
+const props = defineProps(['heroData', 'showCard', 'indicator'])
 const hero = ref('')
+const indicator = ref('')
 
 const handleVisibility = () => {
   props.showCard(false)
@@ -12,6 +13,10 @@ const handleVisibility = () => {
 onBeforeMount(() => {
   hero.value = props.heroData
 })
+onUpdated(() => {
+  indicator.value = props.indicator
+  console.log(indicator.value)
+})
 </script>
 <template>
   <article>
@@ -19,10 +24,17 @@ onBeforeMount(() => {
     <img class="pj" :src="`${hero.thumbnail.path}.${hero.thumbnail.extension}`" alt="mantecol" />
     <h1>{{ hero.name ? hero.name : hero.title }}</h1>
     <p>{{ hero.description }}</p>
-    <div class="buttons">
-      <button class="button">comics</button>
-      <button class="button">series</button>
-      <button class="button">stories</button>
+    <div class="buttons" v-if="hero.name">
+      <router-link class="button" :to="'/characters/comics/' + hero.id">comics</router-link>
+      <router-link class="button" :to="'/characters/series/' + hero.id">series</router-link>
+      <router-link class="button" :to="'/characters/events/' + hero.id">events</router-link>
+    </div>
+    <div class="buttons" v-else>
+      <router-link class="button" :to="indicator + '/characters/' + hero.id"
+        >characters</router-link
+      >
+      <router-link class="button" :to="indicator + '/series/' + hero.id">series</router-link>
+      <router-link class="button" :to="indicator + '/events/' + hero.id">events</router-link>
     </div>
   </article>
 </template>
