@@ -116,4 +116,17 @@ function handleIndicator(e) {
   background-color: #f90000;
   color: #242424;
 }
+@media (max-width: 800px) {
+  .title {
+    margin: 1rem 0;
+    justify-content: space-between;
+  }
+  .title p {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  .title a {
+    margin-bottom: 1rem;
+  }
+}
 </style>
