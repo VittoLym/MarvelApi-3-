@@ -281,4 +281,16 @@ h1 {
   width: 80%;
   color: #c0c0c0;
 }
+@media (max-width: 800px) {
+  div {
+    height: 10vh;
+  }
+  .characters {
+    padding: 1rem 0;
+  }
+  main .card {
+    height: 8rem;
+    width: 7rem;
+  }
+}
 </style>
