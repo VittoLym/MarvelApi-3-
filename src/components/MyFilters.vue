@@ -52,4 +52,11 @@ section p {
   display: inline;
   width: 100%;
 }
+
+@media (max-width: 800px) {
+  section {
+    width: 60vw;
+    height: 15vh;
+  }
+}
 </style>

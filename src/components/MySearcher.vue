@@ -160,4 +160,13 @@ input::placeholder {
 .icon:hover {
   scale: 1.1;
 }
+
+@media (max-width: 800px) {
+  label {
+    width: 59vw;
+  }
+  .inputContainer {
+    width: 60vw;
+  }
+}
 </style>
