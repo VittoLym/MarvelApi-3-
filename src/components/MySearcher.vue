@@ -55,7 +55,7 @@ onUpdated(() => {
 </script>
 <template>
   <div class="finder">
-    <label for="search">Find your Character, Comic or Movie</label>
+    <label for="search">Find your Character, Comic or Event</label>
     <article class="inputContainer">
       <input
         id="search"
@@ -63,7 +63,7 @@ onUpdated(() => {
         @keydown.enter="searchHero"
         :ref="inputText"
         v-model="inputText"
-        placeholder="Hulk, Ironman, Reed Richards..."
+        placeholder="Hulk, Ironman.."
       />
       <article class="Icons">
         <img @click="searchHero" class="icon" :src="SearchIcon" alt="find hero" />
@@ -164,9 +164,16 @@ input::placeholder {
 @media (max-width: 800px) {
   label {
     width: 59vw;
+    font-size: 0.9rem;
   }
   .inputContainer {
     width: 60vw;
+  }
+  .Icons {
+    width: 25vw;
+  }
+  .Icons img {
+    width: 12vw;
   }
 }
 </style>
