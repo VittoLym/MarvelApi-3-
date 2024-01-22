@@ -50,10 +50,7 @@ article a p:hover {
 }
 @media (max-width: 800px) {
   .nav {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-position-y: 10px;
-    background-position-x: -300px;
+    display: none;
   }
 }
 </style>

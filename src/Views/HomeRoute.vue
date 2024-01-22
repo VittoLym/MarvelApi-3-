@@ -6,6 +6,7 @@ import MyHeader from '../components/MyHeader.vue'
 import MyNavbar from '../components/MyNavbar.vue'
 import MySearcher from '../components/MySearcher.vue'
 import MyLayout from '../components/MyLayout.vue'
+import MyNavbarMobile from '../components/MyNavbarMobile.vue'
 
 const heroesApi = ref([])
 const comicsApi = ref([])
@@ -16,6 +17,7 @@ const filteredComics = ref([])
 const filteredEvents = ref([])
 const filteredSeries = ref([])
 const vMenu = ref(false)
+const isMobile = ref(false)
 const headerRef = ref(null)
 
 async function fetchData(url) {
@@ -63,8 +65,18 @@ const changeVisibility = () => {
     vMenu.value = true
   }
 }
-
+function changeDevice() {
+  const width = document.body.getBoundingClientRect().width
+  if (width < 800) {
+    isMobile.value = true
+  } else if (width > 800 && isMobile.value == true) {
+    isMobile.value = false
+  } else {
+    isMobile.value = false
+  }
+}
 onBeforeMount(async () => {
+  addEventListener('resize', changeDevice)
   addEventListener('scroll', changeVisibility)
   heroesApi.value = await fetchData(API_KEY)
   comicsApi.value = await fetchData(API_COMICS)
@@ -74,12 +86,14 @@ onBeforeMount(async () => {
 
 onBeforeUnmount(() => {
   removeEventListener('scroll', changeVisibility)
+  removeEventListener('resize', changeDevice)
 })
 </script>
 <template>
   <main>
     <MyHeader ref="headerRef" />
     <MyNavbar v-if="vMenu" />
+    <MyNavbarMobile v-if="isMobile" />
     <MySearcher
       :eventsApi="eventsApi"
       :comicsApi="comicsApi"
