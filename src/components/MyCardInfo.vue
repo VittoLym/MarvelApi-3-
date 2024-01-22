@@ -46,15 +46,15 @@ onUpdated(() => {
 </template>
 <style scoped>
 article {
-  left: 15%;
+  left: 35%;
   color: #c0c0c0;
-  top: 7rem;
+  top: 18vh;
   position: fixed;
   display: flex;
   align-items: end;
   flex-direction: column;
   justify-content: space-between;
-  width: 70%;
+  width: 30%;
   background: linear-gradient(
     90deg,
     rgba(25, 25, 25, 1) 0%,
@@ -107,9 +107,9 @@ p {
   font-size: 1.3rem;
   background-color: transparent;
   border-radius: 1rem;
-  height: max-content;
-  padding: 0.3rem;
-  margin: 0 0.5rem;
+  padding: 0 0.8rem;
+  height: 60%;
+  margin: 0.5rem 0.7rem;
   transition: all ease 0.5s;
   color: #c0c0c0;
   overflow: hidden;
@@ -123,5 +123,49 @@ section {
   height: 100%;
   display: flex;
   align-items: center;
+}
+section {
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 800px) {
+  article {
+    left: 15%;
+    color: #c0c0c0;
+    top: 7rem;
+    position: fixed;
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 70%;
+    background: linear-gradient(
+      90deg,
+      rgba(25, 25, 25, 1) 0%,
+      rgba(66, 29, 29, 1) 25%,
+      rgba(101, 20, 20, 1) 48%,
+      rgba(60, 23, 23, 1) 75%,
+      rgba(25, 25, 25, 1) 100%
+    );
+    box-shadow: 0 0 7px #00000076;
+    height: 80vh;
+    z-index: 100;
+    border-radius: 0.8rem;
+    overflow: auto;
+  }
+  .button {
+    cursor: pointer;
+    border: 2px solid #ff0000;
+    font-size: 1.3rem;
+    background-color: transparent;
+    border-radius: 1rem;
+    height: max-content;
+    padding: 0.3rem;
+    transition: all ease 0.5s;
+    color: #c0c0c0;
+    overflow: hidden;
+  }
 }
 </style>
