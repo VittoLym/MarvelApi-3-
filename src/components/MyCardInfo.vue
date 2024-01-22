@@ -46,15 +46,15 @@ onUpdated(() => {
 </template>
 <style scoped>
 article {
-  left: 35%;
+  left: 15%;
   color: #c0c0c0;
-  top: 18vh;
+  top: 7rem;
   position: fixed;
   display: flex;
   align-items: end;
   flex-direction: column;
   justify-content: space-between;
-  width: 30%;
+  width: 70%;
   background: linear-gradient(
     90deg,
     rgba(25, 25, 25, 1) 0%,
@@ -107,9 +107,9 @@ p {
   font-size: 1.3rem;
   background-color: transparent;
   border-radius: 1rem;
-  padding: 0 0.8rem;
-  height: 60%;
-  margin: 0.5rem 0.7rem;
+  height: max-content;
+  padding: 0.3rem;
+  margin: 0 0.5rem;
   transition: all ease 0.5s;
   color: #c0c0c0;
   overflow: hidden;
