@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, onUpdated, defineEmits } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['filteredEvents', 'eventsApi', 'ChangeCardVisibility'])
+const props = defineProps(['filteredEvents', 'eventsApi', 'ChangeCardVisibility', 'i'])
 const emits = defineEmits(['indicator'])
 const eventsApi = ref([])
 const filteredEvents = ref([])
@@ -14,6 +14,7 @@ const handleClick = () => {
 onMounted(async () => {})
 
 onUpdated(() => {
+  indicator.value = props.i
   eventsApi.value = props.eventsApi
   filteredEvents.value = props.filteredEvents
 })

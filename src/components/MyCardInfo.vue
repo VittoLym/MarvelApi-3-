@@ -1,8 +1,9 @@
 <script setup>
-import { onBeforeMount, ref, onUpdated } from 'vue'
+import { onBeforeMount, ref, onUpdated, onMounted } from 'vue'
 import Close from '../assets/close.svg'
 
 const props = defineProps(['heroData', 'showCard', 'indicator'])
+const routesTitle = ['Characters', 'Comics', 'Series', 'Events']
 const hero = ref('')
 const indicator = ref('')
 
@@ -13,9 +14,14 @@ const handleVisibility = () => {
 onBeforeMount(() => {
   hero.value = props.heroData
 })
+
+onMounted(() => {
+  indicator.value = props.indicator
+  console.log()
+})
+
 onUpdated(() => {
   indicator.value = props.indicator
-  console.log(indicator.value)
 })
 </script>
 <template>
@@ -30,11 +36,11 @@ onUpdated(() => {
       <router-link class="button" :to="'/characters/events/' + hero.id">events</router-link>
     </div>
     <div class="buttons" v-else>
-      <router-link class="button" :to="indicator + '/characters/' + hero.id"
-        >characters</router-link
-      >
-      <router-link class="button" :to="indicator + '/series/' + hero.id">series</router-link>
-      <router-link class="button" :to="indicator + '/events/' + hero.id">events</router-link>
+      <section v-for="i in routesTitle" :key="i">
+        <router-link :to="indicator + `/${i}/` + hero.id" class="button" v-if="i !== indicator">
+          {{ i }}
+        </router-link>
+      </section>
     </div>
   </article>
 </template>
@@ -90,10 +96,10 @@ p {
 }
 .buttons {
   width: 100%;
+  height: 10vh;
   justify-content: center;
   display: flex;
   flex-direction: row;
-  margin-bottom: 2vh;
 }
 .button {
   cursor: pointer;
@@ -102,12 +108,20 @@ p {
   background-color: transparent;
   border-radius: 1rem;
   padding: 0 0.8rem;
-  margin: 0 0.7rem;
+  height: 60%;
+  margin: 0.5rem 0.7rem;
   transition: all ease 0.5s;
   color: #c0c0c0;
+  overflow: hidden;
 }
 .button:hover {
   scale: 1.1;
   color: #000000;
+}
+section {
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, onUpdated, defineEmits } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['seriesApi', 'filteredSeries', 'ChangeCardVisibility'])
+const props = defineProps(['seriesApi', 'filteredSeries', 'ChangeCardVisibility', 'i'])
 const emits = defineEmits(['indicator'])
 const serieseApi = ref([])
 const filteredSeries = ref([])
@@ -14,6 +14,7 @@ const handleClick = () => {
 onMounted(() => {})
 
 onUpdated(() => {
+  indicator.value = props.i
   serieseApi.value = props.seriesApi
   filteredSeries.value = props.filteredSeries
 })

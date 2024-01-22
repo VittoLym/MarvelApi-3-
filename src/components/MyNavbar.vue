@@ -30,7 +30,7 @@
   height: 15vh;
   background-image: url(../assets/Marvel2Header.png);
   background-size: cover;
-  background-position: center;
+  background-position: left;
   background-position-x: -40px;
   border-bottom: #f90000 5px solid;
 }
@@ -47,5 +47,13 @@ article a p {
 
 article a p:hover {
   color: #cecece;
+}
+@media (max-width: 800px) {
+  .nav {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-position-y: 10px;
+    background-position-x: -300px;
+  }
 }
 </style>

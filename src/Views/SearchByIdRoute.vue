@@ -27,6 +27,7 @@ async function fetchData(url) {
     console.log(error)
   }
 }
+
 function handleEmit(ref) {
   const value = ref.value
   try {
@@ -34,28 +35,21 @@ function handleEmit(ref) {
       filteredComics.value = value
       filteredEvents.value = value
       filteredHero.value = value
+      filteredSeries.value = value
     } else if (value.length == 4) {
-      for (let i of value) {
-        if (value.indexOf(i) === 3) {
-          typeof i === 'string' ? (filteredSeries.value = [i]) : (filteredSeries.value = i)
-        } else if (value.indexOf(i) === 2) {
-          typeof i === 'string' ? (filteredEvents.value = [i]) : (filteredEvents.value = i)
-        } else if (value.indexOf(i) === 1) {
-          typeof i === 'string' ? (filteredHero.value = [i]) : (filteredHero.value = i)
-        } else if (value.indexOf(i) === 0) {
-          typeof i === 'string' ? (filteredComics.value = [i]) : (filteredComics.value = i)
-        } else {
-          filteredComics.value = i
-          filteredHero.value = i
-          filteredEvents.value = i
-          filteredSeries.value = i
-        }
-      }
+      const [comics, hero, events, series] = value.map((item) =>
+        typeof item === 'string' ? [item] : item
+      )
+      filteredComics.value = comics
+      filteredEvents.value = events
+      filteredHero.value = hero
+      filteredSeries.value = series
     }
   } catch (e) {
     throw new Error(e)
   }
 }
+
 function ChangeCardVisibility(value) {
   const name = value.target.innerText
   const filterName = heroesApi.value.filter((i) => i.name.trim() == name)
@@ -69,7 +63,9 @@ function closeCard(value) {
 onBeforeMount(async () => {
   const indicator = route.path.split('/').slice(1, 2)
   const i = indicator[0].toLowerCase()
-  const API_KEY = `https://gateway.marvel.com:443/v1/public/${i}/${route.params.id}/${route.params.title}?ts=1&apikey=107b8f25b03dca8471217bc4ed2395d8&hash=87fcd277a5d81647ea2a4684e6ee4baf`
+  const API_KEY = `https://gateway.marvel.com:443/v1/public/${i}/${
+    route.params.id
+  }/${route.params.title.toLowerCase()}?ts=1&apikey=107b8f25b03dca8471217bc4ed2395d8&hash=87fcd277a5d81647ea2a4684e6ee4baf`
   heroesApi.value = await fetchData(API_KEY)
 })
 </script>
@@ -91,7 +87,9 @@ onBeforeMount(async () => {
     />
     <MyCardInfo v-if="showCard" :heroData="heroData" :showCard="closeCard" />
     <main class="characters" v-if="filteredHero.length === 0">
+      <p v-if="heroesApi.length <= 0">there are no coincidence</p>
       <ul
+        v-else
         v-for="i in heroesApi"
         :key="i"
         @click="ChangeCardVisibility"
@@ -100,7 +98,7 @@ onBeforeMount(async () => {
       >
         <article class="textBox">
           <li class="text head">
-            {{ i.name }}
+            {{ i.title ? i.title : i.name }}
           </li>
         </article>
       </ul>
@@ -117,7 +115,7 @@ onBeforeMount(async () => {
       >
         <article class="textBox">
           <li class="text head">
-            {{ i.name }}
+            {{ i.title ? i.title : i.name }}
           </li>
         </article>
       </ul>

@@ -1,8 +1,8 @@
 <script setup>
-import { ref, onUpdated, defineEmits } from 'vue'
+import { ref, onUpdated } from 'vue'
 
 const emits = defineEmits(['indicator'])
-const props = defineProps(['props', 'filteredHero', 'ChangeCardVisibility'])
+const props = defineProps(['props', 'filteredHero', 'ChangeCardVisibility', 'i'])
 const heroesApi = ref([])
 const filteredHero = ref([])
 const indicator = ref('Characters')
@@ -12,6 +12,7 @@ const handleClick = () => {
 }
 
 onUpdated(() => {
+  indicator.value = props.i
   heroesApi.value = props.props
   filteredHero.value = props.filteredHero
 })

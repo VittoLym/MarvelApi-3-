@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, onUpdated, defineEmits } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 
-const props = defineProps(['ChangeCardVisibility', 'comicsApi', 'filteredComics'])
+const props = defineProps(['ChangeCardVisibility', 'comicsApi', 'filteredComics', 'i'])
 const emits = defineEmits(['indicator'])
 const filteredComics = ref([])
 const indicator = ref('Comics')
@@ -10,9 +10,12 @@ const handleClick = () => {
   emits('indicator', indicator)
 }
 
-onMounted(async () => {})
+onMounted(async () => {
+  indicator.value = props.i
+})
 
 onUpdated(() => {
+  indicator.value = props.i
   filteredComics.value = props.filteredComics
 })
 </script>

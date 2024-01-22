@@ -77,7 +77,12 @@ onBeforeMount(async () => {
       :seriesApi="filteredSeries"
       @filtered-hero="handleEmit"
     />
-    <MyCardInfo v-if="showCard" :heroData="heroData" :showCard="closeCard" />
+    <MyCardInfo
+      v-if="showCard"
+      :heroData="heroData"
+      :showCard="closeCard"
+      :indicator="'character'"
+    />
     <main class="characters" v-if="filteredHero.length === 0">
       <ul
         v-for="i in heroesApi"

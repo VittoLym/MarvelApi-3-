@@ -40,4 +40,14 @@ header ul img {
 header ul img:hover {
   scale: 1.2;
 }
+@media (max-width: 413px) {
+  header {
+    background-image: url(../../public/wMarvelMobile2.webp);
+    background-size: cover;
+    min-width: 200px;
+  }
+  header h1 {
+    font-size: 1.5rem;
+  }
+}
 </style>

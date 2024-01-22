@@ -57,6 +57,7 @@ function handleIndicator(e) {
       :ChangeCardVisibility="ChangeCardVisibility"
       :props="props.heroesApi"
       :filteredHero="props.filteredHero"
+      :i="i"
       v-if="i === 'Characters'"
     />
     <MyComics
@@ -64,6 +65,7 @@ function handleIndicator(e) {
       :ChangeCardVisibility="ChangeCardVisibility"
       :comicsApi="props.comicsApi"
       :filteredComics="props.filteredComics"
+      :i="i"
       v-if="i === 'Comics'"
     />
     <MyEvents
@@ -71,6 +73,7 @@ function handleIndicator(e) {
       :ChangeCardVisibility="ChangeCardVisibility"
       :eventsApi="props.eventsApi"
       :filteredEvents="props.filteredEvents"
+      :i="i"
       v-if="i === 'Events'"
     />
     <MySeries
@@ -78,6 +81,7 @@ function handleIndicator(e) {
       :ChangeCardVisibility="ChangeCardVisibility"
       :seriesApi="props.seriesApi"
       :filteredSeries="props.filteredSeries"
+      :i="i"
       v-if="i === 'Series'"
     />
   </article>
