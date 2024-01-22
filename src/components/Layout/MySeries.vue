@@ -114,4 +114,16 @@ ul li p {
   font-size: 1.1rem;
   font-weight: bolder;
 }
+@media (max-width: 800px) {
+  ul {
+    max-height: 55vh;
+    padding: 1rem 0;
+    justify-content: space-around;
+  }
+  ul li {
+    height: 15vh;
+    width: 30vw;
+    margin: 0.5rem;
+  }
+}
 </style>

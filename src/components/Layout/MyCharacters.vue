@@ -114,10 +114,12 @@ ul li p {
   ul {
     max-height: 55vh;
     padding: 1rem 0;
+    justify-content: space-around;
   }
   ul li {
-    height: 10vh;
-    margin: 1rem 0.5rem;
+    height: 15vh;
+    width: 30vw;
+    margin: 0.5rem;
   }
 }
 </style>
